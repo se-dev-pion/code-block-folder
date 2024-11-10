@@ -1,0 +1,16 @@
+{
+    "Region Start": {
+        "prefix": "region-start",
+        "body": [
+            "# [$1]"
+        ],
+        "description": "Insert a foldable region start marker with a custom name"
+    },
+    "Region End": {
+        "prefix": "region-end",
+        "body": [
+            "# [/]"
+        ],
+        "description": "Insert a foldable region end marker"
+    }
+}
