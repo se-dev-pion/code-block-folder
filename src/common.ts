@@ -46,3 +46,7 @@ export function isSingleLineCommentWithPrefix(line: string, language: string, pr
 export function hasSingleLineCommentSuffix(line: string, language: string, suffix: string): boolean {
     return commentTagMap.has(language) && line.trim().endsWith(commentTagMap.get(language) + suffix);
 }
+
+export const titlePrefix: string = "[";
+export const titleSuffix: string = "]";
+export const endTag: string = titlePrefix + "/" + titleSuffix;

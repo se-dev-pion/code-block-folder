@@ -1,5 +1,5 @@
 import vscode from 'vscode';
-import { isSingleLineCommentWithPrefix } from './common';
+import { isSingleLineCommentWithPrefix, titlePrefix, titleSuffix } from './common';
 
 export function highlightTitle(context: vscode.ExtensionContext) {
     const decorationType = vscode.window.createTextEditorDecorationType({
@@ -16,10 +16,10 @@ export function highlightTitle(context: vscode.ExtensionContext) {
         const decorations = new Array<vscode.DecorationOptions>();
         for (let i = 0; i < document.lineCount; i++) {
             const line = document.lineAt(i);
-            if (isSingleLineCommentWithPrefix(line.text, document.languageId, '[')) {
-                const left = line.text.indexOf("[");
+            if (isSingleLineCommentWithPrefix(line.text, document.languageId, titlePrefix)) {
+                const left = line.text.indexOf(titlePrefix);
                 const start = line.range.start.translate(0, left);
-                const right = line.text.indexOf("]");
+                const right = line.text.indexOf(titleSuffix);
                 const end = (right !== -1) ? line.range.start.translate(0, right + 1) : line.range.end;
                 const range = line.range.with(start, end);
                 const decoration = { range: range };
