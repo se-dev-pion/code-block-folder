@@ -1,3 +1,4 @@
+// [CreateMappingFromLanguageToCommentPrefix]
 export const commentTagMap = new Map<string, string>();
 
 const languages1: string[] = [
@@ -37,7 +38,7 @@ const languages3: string[] = [
 
 for (const language of languages3) {
     commentTagMap.set(language, "-- ");
-}
+} // [/]
 
 export function isSingleLineCommentWithPrefix(line: string, language: string, prefix: string): boolean {
     return commentTagMap.has(language) && line.trim().startsWith(commentTagMap.get(language) + prefix);
@@ -47,6 +48,7 @@ export function hasSingleLineCommentSuffix(line: string, language: string, suffi
     return commentTagMap.has(language) && line.trim().endsWith(commentTagMap.get(language) + suffix);
 }
 
+// [MarkerConstants]
 export const titlePrefix: string = "[";
 export const titleSuffix: string = "]";
-export const endTag: string = titlePrefix + "/" + titleSuffix;
+export const endTag: string = titlePrefix + "/" + titleSuffix; // [/]
