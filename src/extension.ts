@@ -1,4 +1,3 @@
-
 import * as vscode from 'vscode';
 import { loadFolder } from './folder';
 import { highlightTitle } from './highlight';
