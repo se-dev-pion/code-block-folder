@@ -12,5 +12,13 @@
             "# [/]"
         ],
         "description": "Insert a foldable region end marker"
+    },
+    "Region Block:": {
+        "prefix": "region-block",
+        "body": [
+            "# [$1]",
+            "$2 # [/]"
+        ],
+        "description": "Insert a foldable region block"
     }
 }
