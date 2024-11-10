@@ -139,7 +139,7 @@
     "lint": "eslint src",
     "test": "vscode-test",
     "build": "vsce package --no-dependencies",
-    "publish": "vsce publish"
+    "publish": "vsce publish --no-dependencies"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.9",
