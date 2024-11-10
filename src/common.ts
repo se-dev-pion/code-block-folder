@@ -42,3 +42,7 @@ for (const language of languages3) {
 export function isSingleLineCommentWithPrefix(line: string, language: string, prefix: string): boolean {
     return commentTagMap.has(language) && line.trim().startsWith(commentTagMap.get(language) + prefix);
 }
+
+export function hasSingleLineCommentSuffix(line: string, language: string, suffix: string): boolean {
+    return commentTagMap.has(language) && line.trim().endsWith(commentTagMap.get(language) + suffix);
+}
