@@ -3,7 +3,7 @@
   "displayName": "Code Block Folder",
   "description": "A simple Visual Studio Code extension enabling customized code folding with comments to make it easier to read codes",
   "version": "0.0.1",
-  "icon": "./icon.png",
+  "icon": "./assets/icon.png",
   "publisher": "se-dev-pion",
   "repository": "https://github.com/se-dev-pion/code-block-folder",
   "engines": {
