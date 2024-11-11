@@ -27,6 +27,6 @@
 
 ## Examples
 
-1. Change a current code block to foldable one.![add_folding.gif](https://github.com/se-dev-pion/code-block-folder/blob/main/assets/add_folding.gif)
+1. Change a current code block to foldable one.![add_folding.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/assets/add_folding.gif)
 
-2. Write a code segment inside a foldable code block.![write_block.gif](https://github.com/se-dev-pion/code-block-folder/blob/main/assets/write_block.gif)
+2. Write a code segment inside a foldable code block.![write_block.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/assets/write_block.gif)
