@@ -1,5 +1,5 @@
 import vscode from 'vscode';
-import { commentTagMap, endTag, titlePrefix, titleSuffix } from './common';
+import { commentTagMap, endTag, hasSingleLineCommentSuffix, titlePrefix, titleSuffix } from './common';
 export function registerFoldableBlockInserter(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand("code-block-folder.insert-foldable-block", () => {
         // [CheckActiveEditor]
@@ -18,7 +18,7 @@ export function registerFoldableBlockInserter(context: vscode.ExtensionContext) 
         // [GenerateInsertions]
         const commentTag = commentTagMap.get(language) as string;
         const head: string = commentTag + titlePrefix + titleSuffix + '\n';
-        const tail: string = ' ' + commentTag + endTag; // [/]
+        const tail: string = commentTag + endTag; // [/]
         const moveCursor = (success: boolean) => {
             if (success) {
                 // [FormatDocumentAndMoveCursor] 
@@ -33,7 +33,9 @@ export function registerFoldableBlockInserter(context: vscode.ExtensionContext) 
             ? (editBuilder: vscode.TextEditorEdit) => {
                 editBuilder.insert(editor.selection.active, head + tail);
             } : (editBuilder: vscode.TextEditorEdit) => {
-                editBuilder.insert(new vscode.Position(selection.end.line, document.lineAt(selection.end.line).text.length), tail);
+                const includingFoldableBlock: boolean = hasSingleLineCommentSuffix(document.lineAt(selection.end.line).text, language, endTag);
+                const extraSeparator: string = includingFoldableBlock ? '\n' : ' ';
+                editBuilder.insert(new vscode.Position(selection.end.line, document.lineAt(selection.end.line).text.length), extraSeparator + tail);
                 editBuilder.insert(new vscode.Position(selection.start.line, 0), head);
             }).then(moveCursor);
         return; // [/]
