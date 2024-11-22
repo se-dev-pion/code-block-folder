@@ -1,3 +1,5 @@
+import vscode from 'vscode';
+
 // [CreateMappingFromLanguageToCommentPrefix]
 export const commentTagMap = new Map<string, string>();
 
@@ -52,3 +54,30 @@ export function hasSingleLineCommentSuffix(line: string, language: string, suffi
 export const titlePrefix: string = "[";
 export const titleSuffix: string = "]";
 export const endTag: string = titlePrefix + "/" + titleSuffix; // [/]
+
+
+interface Handler<T> {
+    (document: vscode.TextDocument, stack: number[], end: number): T;
+}
+export function registerFoldableBlocks<T>(document: vscode.TextDocument, handler: Handler<T>): T[] {
+    // [Preparation]
+    const collections = new Array<T>();
+    const language: string = document.languageId;
+    const stack = new Array<number>(); // [/]
+    for (let i = 0; i < document.lineCount; i++) {
+        const line = document.lineAt(i);
+        // [StoreIndexOfLineWithStartMarker]
+        if (isSingleLineCommentWithPrefix(line.text, language, titlePrefix) && !isSingleLineCommentWithPrefix(line.text, language, endTag)) {
+            stack.push(i);
+            continue;
+        } // [/]
+        if (stack.length === 0) {
+            continue;
+        }
+        // [HandleFoldableBlock]
+        if (hasSingleLineCommentSuffix(line.text, language, endTag)) {
+            collections.push(handler(document, stack, i));
+        } // [/]
+    }
+    return collections;
+}
