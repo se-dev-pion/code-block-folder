@@ -2,13 +2,14 @@ import vscode from 'vscode';
 import lodash from 'lodash';
 import { registerFoldableBlocks, titlePrefix, titleSuffix } from './common';
 
-export function highlightTitle(context: vscode.ExtensionContext) {
+export function highlightTitle(_context: vscode.ExtensionContext) {
     // [DefiniteHighlightStyle]
     const decorationType = vscode.window.createTextEditorDecorationType({
-        backgroundColor: '#003366',
-        color: '#FFFFFF',
-        opacity: '0.8'
-    }); // [/]
+        backgroundColor: new vscode.ThemeColor('editor.foreground'),
+        color: new vscode.ThemeColor('editor.background'),
+        fontWeight: 'bold',
+    });
+    // [/]
     const updateDecorations = lodash.debounce(async () => {
         // [AddHighlightToTitles]
         for (const editor of vscode.window.visibleTextEditors) {
@@ -30,5 +31,6 @@ export function highlightTitle(context: vscode.ExtensionContext) {
     vscode.workspace.onDidChangeTextDocument(updateDecorations);
     vscode.window.onDidChangeActiveTextEditor(updateDecorations);
     vscode.window.onDidChangeVisibleTextEditors(updateDecorations);
-    vscode.window.onDidChangeTextEditorVisibleRanges(updateDecorations); // [/]
+    vscode.window.onDidChangeTextEditorVisibleRanges(updateDecorations);
+    vscode.window.onDidChangeActiveColorTheme(updateDecorations); // [/]
 }
