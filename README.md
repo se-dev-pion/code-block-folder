@@ -4,6 +4,9 @@
 
 ***A simple Visual Studio Code extension enabling customized code folding with comments to make it easier to read codes.***
 
+> If this is helpful to you, please give it a ⭐ on [GitHub](https://github.com/se-dev-pion/code-block-folder) and share it with your friends!
+> Feedback or suggestions will be discussed and handled in [Issues](https://github.com/se-dev-pion/code-block-folder/issues).
+
 ## Supported Languages
 
 - `c`
