@@ -1,5 +1,5 @@
 import vscode from 'vscode';
-import { commentTagMap, endTag, hasSingleLineCommentSuffix, titlePrefix, titleSuffix } from './common';
+import { commentTagMap, endTag, hasSingleLineCommentSuffix, isSingleLineCommentWithPrefix, titlePrefix, titleSuffix } from './common';
 export function registerFoldableBlockInserter(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand("code-block-folder.insert-foldable-block", () => {
         // [CheckActiveEditor]
@@ -33,10 +33,17 @@ export function registerFoldableBlockInserter(context: vscode.ExtensionContext) 
             ? (editBuilder: vscode.TextEditorEdit) => {
                 editBuilder.insert(editor.selection.active, head + tail);
             } : (editBuilder: vscode.TextEditorEdit) => {
-                const includingFoldableBlock: boolean = hasSingleLineCommentSuffix(document.lineAt(selection.end.line).text, language, endTag);
-                const extraSeparator: string = includingFoldableBlock ? '\n' : ' ';
+                let extraSeparator: string;
+                if (isSingleLineCommentWithPrefix(document.lineAt(selection.end.line).text, language, '')) {
+                    extraSeparator = '\n\n';
+                } else if (hasSingleLineCommentSuffix(document.lineAt(selection.end.line).text, language, endTag)) {
+                    extraSeparator = '\n';
+                } else {
+                    extraSeparator = ' ';
+                }
                 editBuilder.insert(new vscode.Position(selection.end.line, document.lineAt(selection.end.line).text.length), extraSeparator + tail);
-                editBuilder.insert(new vscode.Position(selection.start.line, 0), head);
+                extraSeparator = isSingleLineCommentWithPrefix(document.lineAt(selection.start.line).text, language, '') ? '\n' : '';
+                editBuilder.insert(new vscode.Position(selection.start.line, 0), head + extraSeparator);
             }).then(moveCursor);
         return; // [/]
     });
