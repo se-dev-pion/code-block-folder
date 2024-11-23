@@ -24,3 +24,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fix: [redundant highlight](https://github.com/se-dev-pion/code-block-folder/issues/1)
 - Fix: [folding ineffective](https://github.com/se-dev-pion/code-block-folder/issues/4)
 - Optimize: [better color matching](https://github.com/se-dev-pion/code-block-folder/issues/2)
+
+## [v0.0.5]
+
+- Fix: [not working](https://github.com/se-dev-pion/code-block-folder/issues/12)
+- Fix: [folding ineffective](https://github.com/se-dev-pion/code-block-folder/issues/4) ***not fixed correctly in `v0.0.4`***
