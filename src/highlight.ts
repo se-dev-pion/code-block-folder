@@ -1,5 +1,5 @@
 import vscode from 'vscode';
-import { registerFoldableBlocks, titlePrefix, titleSuffix } from './common';
+import { debounced, registerFoldableBlocks, titlePrefix, titleSuffix } from './common';
 
 export function highlightTitle(_context: vscode.ExtensionContext) {
     // [DefiniteHighlightStyle]
@@ -9,7 +9,7 @@ export function highlightTitle(_context: vscode.ExtensionContext) {
         fontWeight: 'bold',
     });
     // [/]
-    const updateDecorations = async () => {
+    const updateDecorations = debounced(async () => {
         // [AddHighlightToTitles]
         for (const editor of vscode.window.visibleTextEditors) {
             const document: vscode.TextDocument = editor.document;
@@ -23,7 +23,7 @@ export function highlightTitle(_context: vscode.ExtensionContext) {
             };
             editor.setDecorations(decorationType, registerFoldableBlocks(document, handler));
         } // [/]
-    };
+    }, 50);
     updateDecorations();
     // [AddEventListeners]
     vscode.workspace.onDidOpenTextDocument(updateDecorations);

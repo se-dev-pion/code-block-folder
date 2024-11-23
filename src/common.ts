@@ -56,6 +56,7 @@ export const titleSuffix: string = "]";
 export const endTag: string = titlePrefix + "/" + titleSuffix; // [/]
 
 
+// [DetectAndRecordFoldableBlocks]
 interface Handler<T> {
     (document: vscode.TextDocument, stack: number[], end: number): T;
 }
@@ -80,4 +81,17 @@ export function registerFoldableBlocks<T>(document: vscode.TextDocument, handler
         } // [/]
     }
     return collections;
+} // [/]
+
+export function debounced<T extends Function>(func: T, wait: number): T {
+    let timeout: NodeJS.Timeout | null = null;
+    const f: Function = (...args: any[]): void => {
+        if (timeout !== null) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(() => {
+            func(...args);
+        }, wait);
+    };
+    return f as T;
 }
