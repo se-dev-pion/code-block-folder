@@ -1,5 +1,4 @@
 import vscode from 'vscode';
-import lodash from 'lodash';
 import { registerFoldableBlocks, titlePrefix, titleSuffix } from './common';
 
 export function highlightTitle(_context: vscode.ExtensionContext) {
@@ -10,7 +9,7 @@ export function highlightTitle(_context: vscode.ExtensionContext) {
         fontWeight: 'bold',
     });
     // [/]
-    const updateDecorations = lodash.debounce(async () => {
+    const updateDecorations = async () => {
         // [AddHighlightToTitles]
         for (const editor of vscode.window.visibleTextEditors) {
             const document: vscode.TextDocument = editor.document;
@@ -24,7 +23,7 @@ export function highlightTitle(_context: vscode.ExtensionContext) {
             };
             editor.setDecorations(decorationType, registerFoldableBlocks(document, handler));
         } // [/]
-    }, 50);
+    };
     updateDecorations();
     // [AddEventListeners]
     vscode.workspace.onDidOpenTextDocument(updateDecorations);
