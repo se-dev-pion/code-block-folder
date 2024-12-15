@@ -34,6 +34,24 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Code Block Folder Configuration",
+      "properties": {
+        "code-block-folder.title-text-color": {
+          "type": "string",
+          "description": "Text color of foldable block titles."
+        },
+        "code-block-folder.title-background-color": {
+          "type": "string",
+          "description": "Background color of foldable block titles."
+        },
+        "code-block-folder.ending-border-color": {
+          "type": "string",
+          "description": "Border Color of foldable block ending markers."
+        }
+      }
+    },
     "commands": [
       {
         "command": "code-block-folder.insert-foldable-block",

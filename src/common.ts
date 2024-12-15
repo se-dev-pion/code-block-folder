@@ -95,3 +95,8 @@ export function debounced<T extends Function>(func: T, wait: number): T {
     };
     return f as T;
 }
+
+export const configKey: string = 'code-block-folder';
+export const configKeyTitleTextColor: string = 'title-text-color';
+export const configKeyTitleBackgroundColor: string = 'title-background-color';
+export const configKeyEndingBorderColor: string = 'ending-border-color';
