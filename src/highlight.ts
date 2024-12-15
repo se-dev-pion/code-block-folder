@@ -1,19 +1,22 @@
 import vscode from 'vscode';
-import { debounced, endTag, registerFoldableBlocks, titlePrefix, titleSuffix } from './common';
+import { configKey, configKeyEndingBorderColor, configKeyTitleBackgroundColor, configKeyTitleTextColor, debounced, endTag, registerFoldableBlocks, titlePrefix, titleSuffix } from './common';
 
 export function highlightTitle(_context: vscode.ExtensionContext) {
-    // [DefiniteHighlightStyles]
-    const titleDecoration = vscode.window.createTextEditorDecorationType({
-        backgroundColor: new vscode.ThemeColor('editor.foreground'),
-        color: new vscode.ThemeColor('editor.background'),
-        fontWeight: 'bold',
-    });
-    const endingDecoration = vscode.window.createTextEditorDecorationType({
-        borderColor: new vscode.ThemeColor('editor.foreground'),
-        borderWidth: '2px',
-        borderStyle: 'solid',
-    }); // [/]
     const updateDecorations = debounced(async () => {
+        // [DefiniteHighlightStyles]
+        const titleTextColor = vscode.workspace.getConfiguration(configKey).get(configKeyTitleTextColor) as string;
+        const titleBackgroundColor = vscode.workspace.getConfiguration(configKey).get(configKeyTitleBackgroundColor) as string;
+        const titleDecoration = vscode.window.createTextEditorDecorationType({
+            backgroundColor: titleBackgroundColor || new vscode.ThemeColor('editor.foreground'),
+            color: titleTextColor || new vscode.ThemeColor('editor.background'),
+            fontWeight: 'bold',
+        });
+        const endingBorderColor = vscode.workspace.getConfiguration(configKey).get(configKeyEndingBorderColor) as string;
+        const endingDecoration = vscode.window.createTextEditorDecorationType({
+            borderColor: endingBorderColor || new vscode.ThemeColor('editor.foreground'),
+            borderWidth: '2px',
+            borderStyle: 'solid',
+        }); // [/]
         for (const editor of vscode.window.visibleTextEditors) {
             const document: vscode.TextDocument = editor.document;
             // [AddHighlightToTitles]
@@ -47,6 +50,7 @@ export function highlightTitle(_context: vscode.ExtensionContext) {
     // [AddEventListeners]
     vscode.workspace.onDidOpenTextDocument(updateDecorations);
     vscode.workspace.onDidChangeTextDocument(updateDecorations);
+    vscode.workspace.onDidChangeConfiguration(updateDecorations);
     vscode.window.onDidChangeActiveTextEditor(updateDecorations);
     vscode.window.onDidChangeVisibleTextEditors(updateDecorations);
     vscode.window.onDidChangeTextEditorVisibleRanges(updateDecorations);
