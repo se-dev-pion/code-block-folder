@@ -17,23 +17,27 @@ export function highlightTitle(_context: vscode.ExtensionContext) {
         for (const editor of vscode.window.visibleTextEditors) {
             const document: vscode.TextDocument = editor.document;
             // [AddHighlightToTitles]
-            const handleTitle = (document: vscode.TextDocument, stack: number[], _end: number) => {
-                const line = document.lineAt(stack.pop() as number);
-                const leftBorder = line.text.indexOf(titlePrefix);
-                const rangeStart = line.range.start.translate(0, leftBorder);
-                const rightBorder = line.text.indexOf(titleSuffix);
-                const rangeEnd = (rightBorder !== -1) ? line.range.start.translate(0, rightBorder + 1) : line.range.end;
-                return { range: line.range.with(rangeStart, rangeEnd) };
+            const handleTitle = (document: vscode.TextDocument, stack: number[], end: number) => {
+                const start = stack.pop() as number;
+                const lineToBeDecorated = document.lineAt(start);
+                const leftBorder = lineToBeDecorated.text.indexOf(titlePrefix);
+                const rightBorder = lineToBeDecorated.text.indexOf(titleSuffix);
+                const rangeStart = lineToBeDecorated.range.start.translate(0, leftBorder);
+                const rangeEnd = (rightBorder !== -1) ? lineToBeDecorated.range.start.translate(0, rightBorder + 1) : lineToBeDecorated.range.end;
+                const title = extractTitle(lineToBeDecorated.text);
+                return buildDecoratedRange(document.uri, lineToBeDecorated, rangeStart, rangeEnd, start, end, title);
             };
             editor.setDecorations(titleDecoration, registerFoldableBlocks(document, handleTitle)); // [/]
             // [AddHighlightToEndings]
-            const handleEnding = (document: vscode.TextDocument, _stack: number[], end: number) => {
-                const line = document.lineAt(end);
-                const leftBorder = line.text.indexOf(endTag);
-                const rangeStart = line.range.start.translate(0, leftBorder);
+            const handleEnding = (document: vscode.TextDocument, stack: number[], end: number) => {
+                const start = stack.pop() as number;
+                const lineToBeDecorated = document.lineAt(end);
+                const leftBorder = lineToBeDecorated.text.indexOf(endTag);
                 const rightBorder = leftBorder + endTag.length;
-                const rangeEnd = line.range.start.translate(0, rightBorder + 1);
-                return { range: line.range.with(rangeStart, rangeEnd) };
+                const rangeStart = lineToBeDecorated.range.start.translate(0, leftBorder);
+                const rangeEnd = lineToBeDecorated.range.start.translate(0, rightBorder + 1);
+                const title = extractTitle(document.lineAt(start).text);
+                return buildDecoratedRange(document.uri, lineToBeDecorated, rangeStart, rangeEnd, start, end, title);
             };
             const endings = registerFoldableBlocks(document, handleEnding);
             editor.setDecorations(endingDecoration, endings); // [/]
@@ -47,4 +51,34 @@ export function highlightTitle(_context: vscode.ExtensionContext) {
     vscode.window.onDidChangeVisibleTextEditors(updateDecorations);
     vscode.window.onDidChangeTextEditorVisibleRanges(updateDecorations);
     vscode.window.onDidChangeActiveColorTheme(updateDecorations); // [/]
+}
+
+function buildDecoratedRange(docUri: vscode.Uri, lineToBeDecorated: vscode.TextLine, rangeStart: vscode.Position, rangeEnd: vscode.Position, startLine: number, endLine: number, title: string): vscode.DecorationOptions {
+    // [SetHoverMessageWithLink]
+    const hoverMessage = new vscode.MarkdownString();
+    let targetUri: vscode.Uri;
+    const lineRange = `(${startLine + 1}-${endLine + 1})`;
+    if (lineToBeDecorated.lineNumber === startLine) {
+        hoverMessage.appendText(`${lineRange}\t`);
+        targetUri = docUri.with({ fragment: `L${endLine + 1}` });
+        hoverMessage.appendMarkdown(`[Go to End](${targetUri})`);
+    } else {
+        hoverMessage.appendText(`${title}: ${lineRange}\t`);
+        targetUri = docUri.with({ fragment: `L${startLine + 1}` });
+        hoverMessage.appendMarkdown(`[Back to Top](${targetUri})`);
+    } // [/]
+    return {
+        range: lineToBeDecorated.range.with(rangeStart, rangeEnd),
+        hoverMessage,
+    };
+}
+
+function extractTitle(line: string): string {
+    const left: number = line.indexOf(titlePrefix);
+    for (let right: number = left; right < line.length; right++) {
+        if (line[right] === titleSuffix) {
+            return line.substring(left, right + 1);
+        }
+    }
+    return line.slice(left);
 }
