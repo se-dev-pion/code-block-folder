@@ -23,8 +23,7 @@ export function registerFoldableBlockInserter(context: vscode.ExtensionContext) 
             if (success) {
                 // [FormatDocumentAndMoveCursor] 
                 const newCursorPosition = new vscode.Position(selection.start.line, head.indexOf(titleSuffix));
-                editor.selection = new vscode.Selection(newCursorPosition, newCursorPosition);
-                vscode.commands.executeCommand('editor.action.formatDocument'); // [/]
+                editor.selection = new vscode.Selection(newCursorPosition, newCursorPosition); // [/]
             }
         };
         // [InsertWithoutTextSelection]
@@ -42,8 +41,10 @@ export function registerFoldableBlockInserter(context: vscode.ExtensionContext) 
                     extraSeparator = ' ';
                 }
                 editBuilder.insert(new vscode.Position(selection.end.line, document.lineAt(selection.end.line).text.length), extraSeparator + tail);
-                extraSeparator = isSingleLineCommentWithPrefix(document.lineAt(selection.start.line).text, language, '') ? '\n' : '';
-                editBuilder.insert(new vscode.Position(selection.start.line, 0), head + extraSeparator);
+                const startLine = document.lineAt(selection.start.line);
+                const prefixBlanks = startLine.text.replace(startLine.text.trimStart(), '');
+                extraSeparator = isSingleLineCommentWithPrefix(startLine.text, language, '') ? '\n' : '';
+                editBuilder.insert(new vscode.Position(selection.start.line, 0), prefixBlanks + head + extraSeparator);
             }).then(moveCursor);
         return; // [/]
     });
