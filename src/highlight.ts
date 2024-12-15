@@ -25,7 +25,7 @@ export function highlightTitle(_context: vscode.ExtensionContext) {
                 const rangeStart = lineToBeDecorated.range.start.translate(0, leftBorder);
                 const rangeEnd = (rightBorder !== -1) ? lineToBeDecorated.range.start.translate(0, rightBorder + 1) : lineToBeDecorated.range.end;
                 const title = extractTitle(lineToBeDecorated.text);
-                return buildDecoratedRange(document.uri, lineToBeDecorated, rangeStart, rangeEnd, start, end, title);
+                return buildDecoratedRange(editor, lineToBeDecorated, rangeStart, rangeEnd, start, end, title);
             };
             editor.setDecorations(titleDecoration, registerFoldableBlocks(document, handleTitle)); // [/]
             // [AddHighlightToEndings]
@@ -37,7 +37,7 @@ export function highlightTitle(_context: vscode.ExtensionContext) {
                 const rangeStart = lineToBeDecorated.range.start.translate(0, leftBorder);
                 const rangeEnd = lineToBeDecorated.range.start.translate(0, rightBorder + 1);
                 const title = extractTitle(document.lineAt(start).text);
-                return buildDecoratedRange(document.uri, lineToBeDecorated, rangeStart, rangeEnd, start, end, title);
+                return buildDecoratedRange(editor, lineToBeDecorated, rangeStart, rangeEnd, start, end, title);
             };
             const endings = registerFoldableBlocks(document, handleEnding);
             editor.setDecorations(endingDecoration, endings); // [/]
@@ -50,25 +50,37 @@ export function highlightTitle(_context: vscode.ExtensionContext) {
     vscode.window.onDidChangeActiveTextEditor(updateDecorations);
     vscode.window.onDidChangeVisibleTextEditors(updateDecorations);
     vscode.window.onDidChangeTextEditorVisibleRanges(updateDecorations);
-    vscode.window.onDidChangeActiveColorTheme(updateDecorations); // [/]
+    vscode.window.onDidChangeActiveColorTheme(updateDecorations);
+    vscode.window.onDidChangeTextEditorSelection(updateDecorations); // [/]
 }
 
-function buildDecoratedRange(docUri: vscode.Uri, lineToBeDecorated: vscode.TextLine, rangeStart: vscode.Position, rangeEnd: vscode.Position, startLine: number, endLine: number, title: string): vscode.DecorationOptions {
-    // [SetHoverMessageWithLink]
+function buildDecoratedRange(editor: vscode.TextEditor, lineToBeDecorated: vscode.TextLine, rangeStart: vscode.Position, rangeEnd: vscode.Position, startLine: number, endLine: number, title: string): vscode.DecorationOptions {
+    const range: vscode.Range = lineToBeDecorated.range.with(rangeStart, rangeEnd);
+    const docUri: vscode.Uri = editor.document.uri;
     const hoverMessage = new vscode.MarkdownString();
     let targetUri: vscode.Uri;
     const lineRange = `(${startLine + 1}-${endLine + 1})`;
     if (lineToBeDecorated.lineNumber === startLine) {
-        hoverMessage.appendText(`${lineRange}\t`);
+        hoverMessage.appendText(`${lineRange}`);
         targetUri = docUri.with({ fragment: `L${endLine + 1}` });
-        hoverMessage.appendMarkdown(`[Go to End](${targetUri})`);
+        hoverMessage.appendMarkdown(` [Go to End](${targetUri})`);
+        // [InsertButtonBasedOnCursorPosition]
+        hoverMessage.isTrusted = true;
+        let button: string;
+        if (editor.selection.active.line === startLine) {
+            button = ' [`Fold`](command:editor.fold)';
+        } else {
+            const uri = docUri.with({ fragment: `L${startLine + 1}` });
+            button = ' [`Focus`](' + uri + ')';
+        }
+        hoverMessage.appendMarkdown(button); // [/]
     } else {
-        hoverMessage.appendText(`${title}: ${lineRange}\t`);
+        hoverMessage.appendText(`${title}: ${lineRange}`);
         targetUri = docUri.with({ fragment: `L${startLine + 1}` });
-        hoverMessage.appendMarkdown(`[Back to Top](${targetUri})`);
-    } // [/]
+        hoverMessage.appendMarkdown(` [Back to Top](${targetUri})`);
+    }
     return {
-        range: lineToBeDecorated.range.with(rangeStart, rangeEnd),
+        range,
         hoverMessage,
     };
 }
