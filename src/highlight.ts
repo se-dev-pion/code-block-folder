@@ -1,21 +1,9 @@
 import vscode from 'vscode';
 import { configKey, configKeyEndingBorderColor, configKeyTitleBackgroundColor, configKeyTitleTextColor, debounced, endTag, registerFoldableBlocks, titlePrefix, titleSuffix } from './common';
 
+let titleDecoration: vscode.TextEditorDecorationType;
+let endingDecoration: vscode.TextEditorDecorationType;
 export function highlightTitle(_context: vscode.ExtensionContext) {
-    // [DefiniteHighlightStyles]
-    const titleTextColor = vscode.workspace.getConfiguration(configKey).get(configKeyTitleTextColor) as string;
-    const titleBackgroundColor = vscode.workspace.getConfiguration(configKey).get(configKeyTitleBackgroundColor) as string;
-    const titleDecoration = vscode.window.createTextEditorDecorationType({
-        backgroundColor: titleBackgroundColor || new vscode.ThemeColor('editor.foreground'),
-        color: titleTextColor || new vscode.ThemeColor('editor.background'),
-        fontWeight: 'bold',
-    });
-    const endingBorderColor = vscode.workspace.getConfiguration(configKey).get(configKeyEndingBorderColor) as string;
-    const endingDecoration = vscode.window.createTextEditorDecorationType({
-        borderColor: endingBorderColor || new vscode.ThemeColor('editor.foreground'),
-        borderWidth: '2px',
-        borderStyle: 'solid',
-    }); // [/]
     const updateDecorations = debounced(async () => {
         for (const editor of vscode.window.visibleTextEditors) {
             const document: vscode.TextDocument = editor.document;
@@ -50,7 +38,10 @@ export function highlightTitle(_context: vscode.ExtensionContext) {
     // [AddEventListeners]
     vscode.workspace.onDidOpenTextDocument(updateDecorations);
     vscode.workspace.onDidChangeTextDocument(updateDecorations);
-    vscode.workspace.onDidChangeConfiguration(updateDecorations);
+    vscode.workspace.onDidChangeConfiguration(() => {
+        initDecorations();
+        updateDecorations();
+    });
     vscode.window.onDidChangeActiveTextEditor(updateDecorations);
     vscode.window.onDidChangeVisibleTextEditors(updateDecorations);
     vscode.window.onDidChangeTextEditorVisibleRanges(updateDecorations);
@@ -97,4 +88,20 @@ function extractTitle(line: string): string {
         }
     }
     return line.slice(left);
+}
+
+function initDecorations() {
+    const titleTextColor = vscode.workspace.getConfiguration(configKey).get(configKeyTitleTextColor) as string;
+    const titleBackgroundColor = vscode.workspace.getConfiguration(configKey).get(configKeyTitleBackgroundColor) as string;
+    titleDecoration = vscode.window.createTextEditorDecorationType({
+        backgroundColor: titleBackgroundColor || new vscode.ThemeColor('editor.foreground'),
+        color: titleTextColor || new vscode.ThemeColor('editor.background'),
+        fontWeight: 'bold',
+    });
+    const endingBorderColor = vscode.workspace.getConfiguration(configKey).get(configKeyEndingBorderColor) as string;
+    endingDecoration = vscode.window.createTextEditorDecorationType({
+        borderColor: endingBorderColor || new vscode.ThemeColor('editor.foreground'),
+        borderWidth: '2px',
+        borderStyle: 'solid',
+    });
 }
