@@ -29,3 +29,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Fix: [not working](https://github.com/se-dev-pion/code-block-folder/issues/12)
 - Fix: [folding ineffective](https://github.com/se-dev-pion/code-block-folder/issues/4) ***not fixed correctly in `v0.0.4`***
+
+## [v0.1.0]
+
+- Feature: [line range hint](https://github.com/se-dev-pion/code-block-folder/issues/7)
+- Feature: [quick jumping & folding](https://github.com/se-dev-pion/code-block-folder/issues/11)
