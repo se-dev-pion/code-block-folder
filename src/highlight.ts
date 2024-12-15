@@ -59,23 +59,23 @@ function buildDecoratedRange(editor: vscode.TextEditor, lineToBeDecorated: vscod
     const docUri: vscode.Uri = editor.document.uri;
     const hoverMessage = new vscode.MarkdownString();
     let targetUri: vscode.Uri;
-    const lineRange = `(${startLine + 1}-${endLine + 1})`;
+    const lineRange = `${startLine + 1}-${endLine + 1}`;
     if (lineToBeDecorated.lineNumber === startLine) {
-        hoverMessage.appendText(`${lineRange}`);
-        targetUri = docUri.with({ fragment: `L${endLine + 1}` });
-        hoverMessage.appendMarkdown(` [Go to End](${targetUri})`);
         // [InsertButtonBasedOnCursorPosition]
         hoverMessage.isTrusted = true;
         let button: string;
         if (editor.selection.active.line === startLine) {
-            button = ' [`Fold`](command:editor.fold)';
+            button = ' [Fold](command:editor.fold)';
         } else {
             const uri = docUri.with({ fragment: `L${startLine + 1}` });
-            button = ' [`Focus`](' + uri + ')';
+            button = ' [Focus](' + uri + ')';
         }
         hoverMessage.appendMarkdown(button); // [/]
+        hoverMessage.appendText(` :${lineRange}`);
+        targetUri = docUri.with({ fragment: `L${endLine + 1}` });
+        hoverMessage.appendMarkdown(` [Go to End](${targetUri})`);
     } else {
-        hoverMessage.appendText(`${title}: ${lineRange}`);
+        hoverMessage.appendMarkdown(`\`${title}\`: ${lineRange}`);
         targetUri = docUri.with({ fragment: `L${startLine + 1}` });
         hoverMessage.appendMarkdown(` [Back to Top](${targetUri})`);
     }
