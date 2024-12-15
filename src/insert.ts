@@ -33,6 +33,8 @@ export function registerFoldableBlockInserter(context: vscode.ExtensionContext) 
                 editBuilder.insert(editor.selection.active, head + tail);
             } : (editBuilder: vscode.TextEditorEdit) => {
                 let extraSeparator: string;
+                // [InsertEnding]
+                const endLine = document.lineAt(selection.end.line);
                 if (isSingleLineCommentWithPrefix(document.lineAt(selection.end.line).text, language, '')) {
                     extraSeparator = '\n\n';
                 } else if (hasSingleLineCommentSuffix(document.lineAt(selection.end.line).text, language, endTag)) {
@@ -40,11 +42,13 @@ export function registerFoldableBlockInserter(context: vscode.ExtensionContext) 
                 } else {
                     extraSeparator = ' ';
                 }
-                editBuilder.insert(new vscode.Position(selection.end.line, document.lineAt(selection.end.line).text.length), extraSeparator + tail);
+                let prefixBlanks: string = extraSeparator !== ' ' ? endLine.text.replace(endLine.text.trim(), '') : '';
+                editBuilder.insert(new vscode.Position(selection.end.line, endLine.text.length), extraSeparator + tail); // [/]
+                // [InsertTitle]
                 const startLine = document.lineAt(selection.start.line);
-                const prefixBlanks = startLine.text.replace(startLine.text.trimStart(), '');
+                prefixBlanks = startLine.text.replace(startLine.text.trimStart(), '');
                 extraSeparator = isSingleLineCommentWithPrefix(startLine.text, language, '') ? '\n' : '';
-                editBuilder.insert(new vscode.Position(selection.start.line, 0), prefixBlanks + head + extraSeparator);
+                editBuilder.insert(new vscode.Position(selection.start.line, 0), prefixBlanks + head + extraSeparator); // [/]
             }).then(moveCursor);
         return; // [/]
     });
