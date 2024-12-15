@@ -34,3 +34,5 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Feature: [line range hint](https://github.com/se-dev-pion/code-block-folder/issues/7)
 - Feature: [quick jumping & folding](https://github.com/se-dev-pion/code-block-folder/issues/11)
+- Fix & Optimize: [remove dependency on `editor.action.formatDocument`](https://github.com/se-dev-pion/code-block-folder/issues/16)
+- Feature: [support configuration](https://github.com/se-dev-pion/code-block-folder/issues/14)
