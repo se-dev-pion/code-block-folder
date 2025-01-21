@@ -2,10 +2,11 @@
 
 ## Introduction
 
-***A simple Visual Studio Code extension enabling customized code folding with comments to make it easier to read codes.***
+A simple Visual Studio Code extension enabling customized code folding with comments to make it easier to read codes.
+
+***Attention***: Any new feature of this extension will only be tested in [`VSCode`](https://code.visualstudio.com/), [`Cursor`](https://code.visualstudio.com/) and [`Windsurf`](https://codeium.com/windsurf), compatibility with other platforms (such as [`Positron`](https://positron.posit.co/), [`Trae`](https://www.trae.ai/)) is not ensured.
 
 > If you found it helpful, please give a ⭐ on [GitHub](https://github.com/se-dev-pion/code-block-folder) and share it with your friends!
-> Feedback or suggestions will be discussed and handled in [Issues](https://github.com/se-dev-pion/code-block-folder/issues).
 
 ## Supported Languages
 
