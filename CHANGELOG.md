@@ -36,3 +36,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Feature: [quick jumping & folding](https://github.com/se-dev-pion/code-block-folder/issues/11)
 - Fix & Optimize: [remove dependency on `editor.action.formatDocument`](https://github.com/se-dev-pion/code-block-folder/issues/16)
 - Feature: [support configuration](https://github.com/se-dev-pion/code-block-folder/issues/14)
+
+## [v0.1.1]
+
+- Feature: [smaller package size](https://github.com/se-dev-pion/code-block-folder/issues/19)
+- Fix: [correct cursor position](https://github.com/se-dev-pion/code-block-folder/issues/20)
+- Fix: [avoid highlight disappear](https://github.com/se-dev-pion/code-block-folder/issues/21)
