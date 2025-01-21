@@ -22,7 +22,8 @@ export function registerFoldableBlockInserter(context: vscode.ExtensionContext) 
         const moveCursor = (success: boolean) => {
             if (success) {
                 // [FormatDocumentAndMoveCursor] 
-                const newCursorPosition = new vscode.Position(selection.start.line, head.indexOf(titleSuffix));
+                const line = document.lineAt(selection.start.line);
+                const newCursorPosition = new vscode.Position(selection.start.line, line.text.indexOf(titleSuffix));
                 editor.selection = new vscode.Selection(newCursorPosition, newCursorPosition); // [/]
             }
         };
