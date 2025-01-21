@@ -34,6 +34,7 @@ export function highlightTitle(_context: vscode.ExtensionContext) {
             editor.setDecorations(endingDecoration, endings); // [/]
         }
     }, 50);
+    initDecorations();
     updateDecorations();
     // [AddEventListeners]
     vscode.workspace.onDidOpenTextDocument(updateDecorations);
