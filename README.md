@@ -30,10 +30,10 @@
 
 ## Examples
 
-1. Change a current code block to foldable one.![add_folding.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/assets/add_folding.gif)
+1. Change a current code block to foldable one.![add_folding.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/images/add_folding.gif)
 
-2. Write a code segment inside a foldable code block.![write_block.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/assets/write_block.gif)
+2. Write a code segment inside a foldable code block.![write_block.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/images/write_block.gif)
 
-3. Line hint and quick jumping.![quick_jump.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/assets/quick_jump.gif)
+3. Line hint and quick jumping.![quick_jump.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/images/quick_jump.gif)
 
-4. Quick folding and unfolding.![quick_fold.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/assets/quick_fold.gif)
+4. Quick folding and unfolding.![quick_fold.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/images/quick_fold.gif)
