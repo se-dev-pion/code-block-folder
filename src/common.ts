@@ -112,3 +112,4 @@ export const configKey: string = 'code-block-folder';
 export const configKeyTitleTextColor: string = 'title-text-color';
 export const configKeyTitleBackgroundColor: string = 'title-background-color';
 export const configKeyEndingBorderColor: string = 'ending-border-color';
+export const exampleUrl: string = 'https://github.com/se-dev-pion/code-block-folder?tab=readme-ov-file#examples';

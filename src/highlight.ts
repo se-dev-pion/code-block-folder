@@ -1,5 +1,5 @@
 import vscode from 'vscode';
-import { configKey, configKeyEndingBorderColor, configKeyTitleBackgroundColor, configKeyTitleTextColor, debounced, endTag, registerFoldableBlocks, titlePrefix, titleSuffix } from './common';
+import { configKey, configKeyEndingBorderColor, configKeyTitleBackgroundColor, configKeyTitleTextColor, debounced, endTag, exampleUrl, registerFoldableBlocks, titlePrefix, titleSuffix } from './common';
 
 let titleDecoration: vscode.TextEditorDecorationType;
 let endingDecoration: vscode.TextEditorDecorationType;
@@ -75,6 +75,7 @@ function buildDecoratedRange(editor: vscode.TextEditor, lineToBeDecorated: vscod
         targetUri = docUri.with({ fragment: `L${startLine + 1}` });
         hoverMessage.appendMarkdown(` [Back to Top](${targetUri})`);
     }
+    hoverMessage.appendMarkdown(`\n\n[See Examples](${exampleUrl})`);
     return {
         range,
         hoverMessage,
