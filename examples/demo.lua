@@ -1,0 +1,2 @@
+-- [HelloWorld]
+print("Hello, World!") -- [/]

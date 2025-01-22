@@ -1,0 +1,2 @@
+// [HelloWorld]
+println 'Hello, World!' // [/]
