@@ -42,3 +42,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Feature: [smaller package size](https://github.com/se-dev-pion/code-block-folder/issues/19)
 - Fix: [correct cursor position](https://github.com/se-dev-pion/code-block-folder/issues/20)
 - Fix: [avoid highlight disappear](https://github.com/se-dev-pion/code-block-folder/issues/21)
+
+## [v0.2.0]
+
+- Feature: [support more languages](https://github.com/se-dev-pion/code-block-folder/issues/23)
+- Feature: [support frontend frameworks](https://github.com/se-dev-pion/code-block-folder/issues/22)
+- Feature: [better user guidance](https://github.com/se-dev-pion/code-block-folder/issues/25)
