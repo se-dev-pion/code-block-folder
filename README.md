@@ -36,6 +36,10 @@ A simple Visual Studio Code extension enabling customized code folding with comm
 - `groovy`
 - `fsharp`
 - `nim`
+- `vue`
+- `jsx`
+- `tsx`
+- `svelte`
 
 ## Examples
 

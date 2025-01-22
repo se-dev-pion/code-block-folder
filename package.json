@@ -22,6 +22,10 @@
     "onLanguage:swift",
     "onLanguage:javascript",
     "onLanguage:typescript",
+    "onLanguage:vue",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact",
+    "onLanguage:svelte",
     "onLanguage:go",
     "onLanguage:python",
     "onLanguage:ruby",
@@ -117,6 +121,22 @@
       },
       {
         "language": "typescript",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "vue",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "javascriptreact",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "typescriptreact",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "svelte",
         "path": "./snippets/c.code-snippets"
       },
       {
