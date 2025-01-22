@@ -30,7 +30,15 @@
     "onLanguage:perl",
     "onLanguage:rust",
     "onLanguage:lua",
-    "onLanguage:sql"
+    "onLanguage:sql",
+    "onLanguage:odin",
+    "onLanguage:zig",
+    "onLanguage:d",
+    "onLanguage:v",
+    "onLanguage:scala",
+    "onLanguage:groovy",
+    "onLanguage:fsharp",
+    "onLanguage:nim"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -146,6 +154,38 @@
       {
         "language": "sql",
         "path": "./snippets/sql.code-snippets"
+      },
+      {
+        "language": "odin",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "zig",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "d",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "v",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "scala",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "groovy",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "fsharp",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "nim",
+        "path": "./snippets/sh.code-snippets"
       }
     ]
   },

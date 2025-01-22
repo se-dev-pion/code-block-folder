@@ -28,6 +28,14 @@ A simple Visual Studio Code extension enabling customized code folding with comm
 - `rust`
 - `lua`
 - `sql`
+- `odin`
+- `zig`
+- `d`
+- `v`
+- `scala`
+- `groovy`
+- `fsharp`
+- `nim`
 
 ## Examples
 

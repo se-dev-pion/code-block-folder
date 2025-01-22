@@ -15,7 +15,14 @@ const languages1: string[] = [
     'typescript',
     'go',
     'php',
-    'rust'
+    'rust',
+    'odin',
+    'zig',
+    'd',
+    'v',
+    'scala',
+    'groovy',
+    'fsharp'
 ];
 
 for (const language of languages1) {
@@ -26,7 +33,8 @@ const languages2: string[] = [
     'python',
     'ruby',
     'shellscript',
-    'perl'
+    'perl',
+    'nim'
 ];
 
 for (const language of languages2) {
