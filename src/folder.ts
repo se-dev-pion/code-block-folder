@@ -8,7 +8,7 @@ export function loadFolder(context: vscode.ExtensionContext) {
                 // [GenerateFoldingRanges]
                 const handler = (_document: vscode.TextDocument, stack: number[], end: number) => {
                     const start = stack.pop() as number;
-                    return new vscode.FoldingRange(start, end, vscode.FoldingRangeKind.Region);
+                    return [new vscode.FoldingRange(start, end, vscode.FoldingRangeKind.Region)];
                 };
                 return registerFoldableBlocks(document, handler); // [/]
             }

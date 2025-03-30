@@ -68,9 +68,8 @@ export const titleSuffix: string = "]";
 export const endTag: string = titlePrefix + "/" + titleSuffix; // [/]
 
 // [DetectAndRecordFoldableBlocks]
-const regexpMatchTags: RegExp = /\[.*\]:([0-9]+)/;
 interface Handler<T> {
-    (document: vscode.TextDocument, stack: number[], end: number): T;
+    (document: vscode.TextDocument, stack: number[], end: number): T[];
 }
 export function registerFoldableBlocks<T>(document: vscode.TextDocument, handler: Handler<T>): T[] {
     // [Preparation]
@@ -87,7 +86,7 @@ export function registerFoldableBlocks<T>(document: vscode.TextDocument, handler
             if (match) {
                 const j = Number(match[1]) - 1;
                 if (j > i) {
-                    collections.push(handler(document, stack, j));
+                    collections.push(...handler(document, stack, j));
                 }
             } // [/]
             continue;
@@ -97,7 +96,7 @@ export function registerFoldableBlocks<T>(document: vscode.TextDocument, handler
         }
         // [HandleFoldableBlock]
         if (hasSingleLineCommentSuffix(line.text, language, endTag)) {
-            collections.push(handler(document, stack, i));
+            collections.push(...handler(document, stack, i));
         } // [/]
     }
     return collections;
@@ -116,6 +115,7 @@ export function debounced<T extends Function>(func: T, wait: number): T {
     return f as T;
 }
 
+export const regexpMatchTags: RegExp = /\[.*\]:([0-9]+)/;
 export const configKey: string = 'code-block-folder';
 export const configKeyTitleTextColor: string = 'title-text-color';
 export const configKeyTitleBackgroundColor: string = 'title-background-color';
