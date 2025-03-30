@@ -1,10 +1,10 @@
-import vscode from 'vscode';
-import { configKey, configKeyEndingBorderColor, configKeyTitleBackgroundColor, configKeyTitleTextColor, debounced, endTag, exampleUrl, registerFoldableBlocks, titlePrefix, titleSuffix } from './common';
+import vscode, { Position } from 'vscode';
+import { commentTagMap, configKey, configKeyEndingBorderColor, configKeyTitleBackgroundColor, configKeyTitleTextColor, debounced, endTag, exampleUrl, registerFoldableBlocks, titlePrefix, titleSuffix } from './common';
 
 let titleDecoration: vscode.TextEditorDecorationType;
 let endingDecoration: vscode.TextEditorDecorationType;
 export function highlightTitle(context: vscode.ExtensionContext) {
-    const disposable = vscode.commands.registerCommand("code-block-folder.fold", (startLine: number) => {
+    const foldHandler = vscode.commands.registerCommand("code-block-folder.fold", (startLine: number) => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
             return;
@@ -14,7 +14,30 @@ export function highlightTitle(context: vscode.ExtensionContext) {
             vscode.commands.executeCommand("editor.fold");
         });
     });
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(foldHandler);
+    const switch2NumberHandler = vscode.commands.registerCommand("code-block-folder.switch-to-number", (startLineIndex: number, endLineIndex: number) => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return;
+        }
+        const document = editor.document;
+        // [CheckLanguageSupport]
+        const language: string = document.languageId;
+        if (!commentTagMap.has(language)) {
+            vscode.window.showErrorMessage("Unsupported language type");
+            return;
+        } // [/]
+        editor.edit((editBuilder: vscode.TextEditorEdit) => {
+            const startLine = document.lineAt(startLineIndex).text;
+            editBuilder.insert(new vscode.Position(startLineIndex, startLine.indexOf(titleSuffix) + 1), `:${endLineIndex + 1}`);
+            const endLine = document.lineAt(endLineIndex).text;
+            editBuilder.replace(new vscode.Range(
+                new Position(endLineIndex, endLine.indexOf(commentTagMap.get(language)!)),
+                new Position(endLineIndex, endLine.length)
+            ), '');
+        });
+    });
+    context.subscriptions.push(switch2NumberHandler);
     const updateDecorations = debounced(async () => {
         for (const editor of vscode.window.visibleTextEditors) {
             const document: vscode.TextDocument = editor.document;
@@ -65,19 +88,20 @@ function buildDecoratedRange(editor: vscode.TextEditor, lineToBeDecorated: vscod
     const range: vscode.Range = lineToBeDecorated.range.with(rangeStart, rangeEnd);
     const docUri: vscode.Uri = editor.document.uri;
     const hoverMessage = new vscode.MarkdownString();
+    hoverMessage.isTrusted = true;
     let commandUri: string;
     let targetUri: vscode.Uri;
     const lineRange = `${startLine + 1}-${endLine + 1}`;
     if (lineToBeDecorated.lineNumber === startLine) {
-        hoverMessage.isTrusted = true;
         commandUri = `command:code-block-folder.fold?${encodeURIComponent(JSON.stringify([startLine]))}`;
         hoverMessage.appendMarkdown(` [Fold](${commandUri}): ${lineRange}`);
         targetUri = docUri.with({ fragment: `L${endLine + 1}` });
         hoverMessage.appendMarkdown(` [Go to End](${targetUri})`);
     } else {
-        hoverMessage.appendMarkdown(`\`${title}\`: ${lineRange}`);
+        commandUri = `command:code-block-folder.switch-to-number?${encodeURIComponent(JSON.stringify([startLine, endLine]))}`;
+        hoverMessage.appendMarkdown(` [Switch](${commandUri}): ${lineRange}`);
         targetUri = docUri.with({ fragment: `L${startLine + 1}` });
-        hoverMessage.appendMarkdown(` [Back to Top](${targetUri})`);
+        hoverMessage.appendMarkdown(` [Back to Top](${targetUri}) -> \`${title}\``);
     }
     hoverMessage.appendMarkdown(`\n\n[See Examples](${exampleUrl})`);
     return {
