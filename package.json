@@ -42,7 +42,11 @@
     "onLanguage:scala",
     "onLanguage:groovy",
     "onLanguage:fsharp",
-    "onLanguage:nim"
+    "onLanguage:nim",
+    "onLanguage:scss",
+    "onLanguage:sass",
+    "onLanguage:less",
+    "onLanguage:stylus"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -141,6 +145,22 @@
       },
       {
         "language": "go",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "scss",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "sass",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "less",
+        "path": "./snippets/c.code-snippets"
+      },
+      {
+        "language": "stylus",
         "path": "./snippets/c.code-snippets"
       },
       {

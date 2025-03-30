@@ -26,7 +26,11 @@ const languages1: string[] = [
     'v',
     'scala',
     'groovy',
-    'fsharp'
+    'fsharp',
+    'scss',
+    'sass',
+    'less',
+    'stylus'
 ];
 
 for (const language of languages1) {

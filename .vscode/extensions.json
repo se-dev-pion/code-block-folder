@@ -29,5 +29,7 @@
 		"marlon407.code-groovy", // Groovy
 		"ionide.ionide-fsharp", // F#
 		"nimlang.nimlang", // Nim
+		"syler.sass-indented", // Sass
+		"sysoev.language-stylus" // Stylus
 	]
 }
