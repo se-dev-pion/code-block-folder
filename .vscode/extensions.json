@@ -3,6 +3,31 @@
 	// for the documentation about the extensions.json format
 	"recommendations": [
 		"dbaeumer.vscode-eslint",
-		"ms-vscode.extension-test-runner"
+		"ms-vscode.extension-test-runner",
+		// Language Supports
+		"ms-vscode.cpptools", // C/C++
+		"ms-dotnettools.csharp", // C#
+		"redhat.java", // Java
+		"mathiasfrohlich.kotlin", // Kotlin
+		"dart-code.dart-code", // Dart
+		"swiftlang.swift-vscode", // Swift
+		"vue.volar", // Vue
+		"svelte.svelte-vscode", // Svelte
+		"golang.go", // Go
+		"ms-python.python", // Python
+		"shopify.ruby-lsp", // Ruby
+		"bmalehorn.shell-syntax", // Shell
+		"devsense.phptools-vscode", // PHP
+		"richterger.perl", // Perl
+		"rust-lang.rust-analyzer", // Rust,
+		"sumneko.lua", // Lua
+		"danielgavin.ols", // Odin
+		"ziglang.vscode-zig", // Zig
+		"webfreak.code-d", // D
+		"vlanguage.vscode-vlang", // V
+		"scala-lang.scala", // Scala
+		"marlon407.code-groovy", // Groovy
+		"ionide.ionide-fsharp", // F#
+		"nimlang.nimlang", // Nim
 	]
 }
