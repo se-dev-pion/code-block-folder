@@ -3,7 +3,18 @@ import { configKey, configKeyEndingBorderColor, configKeyTitleBackgroundColor, c
 
 let titleDecoration: vscode.TextEditorDecorationType;
 let endingDecoration: vscode.TextEditorDecorationType;
-export function highlightTitle(_context: vscode.ExtensionContext) {
+export function highlightTitle(context: vscode.ExtensionContext) {
+    const disposable = vscode.commands.registerCommand("code-block-folder.fold", (startLine: number) => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return;
+        }
+        const targetUri = editor.document.uri.with({ fragment: `L${startLine + 1}` });
+        vscode.commands.executeCommand("vscode.open", targetUri).then(() => {
+            vscode.commands.executeCommand("editor.fold");
+        });
+    });
+    context.subscriptions.push(disposable);
     const updateDecorations = debounced(async () => {
         for (const editor of vscode.window.visibleTextEditors) {
             const document: vscode.TextDocument = editor.document;
@@ -54,20 +65,13 @@ function buildDecoratedRange(editor: vscode.TextEditor, lineToBeDecorated: vscod
     const range: vscode.Range = lineToBeDecorated.range.with(rangeStart, rangeEnd);
     const docUri: vscode.Uri = editor.document.uri;
     const hoverMessage = new vscode.MarkdownString();
+    let commandUri: string;
     let targetUri: vscode.Uri;
     const lineRange = `${startLine + 1}-${endLine + 1}`;
     if (lineToBeDecorated.lineNumber === startLine) {
-        // [InsertButtonBasedOnCursorPosition]
         hoverMessage.isTrusted = true;
-        let button: string;
-        if (editor.selection.active.line === startLine) {
-            button = ' [Fold](command:editor.fold)';
-        } else {
-            const uri = docUri.with({ fragment: `L${startLine + 1}` });
-            button = ' [Focus](' + uri + ')';
-        }
-        hoverMessage.appendMarkdown(button); // [/]
-        hoverMessage.appendText(` :${lineRange}`);
+        commandUri = `command:code-block-folder.fold?${encodeURIComponent(JSON.stringify([startLine]))}`;
+        hoverMessage.appendMarkdown(` [Fold](${commandUri}): ${lineRange}`);
         targetUri = docUri.with({ fragment: `L${endLine + 1}` });
         hoverMessage.appendMarkdown(` [Go to End](${targetUri})`);
     } else {
