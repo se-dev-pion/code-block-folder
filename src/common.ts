@@ -67,8 +67,8 @@ export const titlePrefix: string = "[";
 export const titleSuffix: string = "]";
 export const endTag: string = titlePrefix + "/" + titleSuffix; // [/]
 
-
 // [DetectAndRecordFoldableBlocks]
+const regexpMatchTags: RegExp = /\[.*\]:([0-9]+)/;
 interface Handler<T> {
     (document: vscode.TextDocument, stack: number[], end: number): T;
 }
@@ -82,6 +82,14 @@ export function registerFoldableBlocks<T>(document: vscode.TextDocument, handler
         // [StoreIndexOfLineWithStartMarker]
         if (isSingleLineCommentWithPrefix(line.text, language, titlePrefix) && !isSingleLineCommentWithPrefix(line.text, language, endTag)) {
             stack.push(i);
+            // [HandleStartMarkerWithEndingLineNumber]
+            const match = regexpMatchTags.exec(line.text);
+            if (match) {
+                const j = Number(match[1]) - 1;
+                if (j > i) {
+                    collections.push(handler(document, stack, j));
+                }
+            } // [/]
             continue;
         } // [/]
         if (stack.length === 0) {
