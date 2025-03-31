@@ -1,5 +1,6 @@
 import vscode from 'vscode';
 import { commentTagMap, endTag, regexpMatchTags, titlePrefix } from './constants';
+import { ErrInvalidLanguage, ErrNoActiveEditor } from './errors';
 
 export function isSingleLineCommentWithPrefix(line: string, language: string, prefix: string): boolean {
     return commentTagMap.has(language) && line.trim().startsWith(commentTagMap.get(language) + prefix);
@@ -55,4 +56,32 @@ export function debounced<T extends Function>(func: T, wait: number): T {
         }, wait);
     };
     return f as T;
+}
+
+export function buildCmdId(name: string): string {
+    return 'code-block-folder.' + name;
+}
+
+export function buildCmdUri(id: string, ...args: any[]): string {
+    return `command:${id}?${encodeURIComponent(JSON.stringify(args))}`;
+}
+
+export function getCurrentEditor(): vscode.TextEditor {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        throw ErrNoActiveEditor;
+    }
+    return editor;
+}
+
+export function getDocLanguage(doc: vscode.TextDocument): string {
+    if (!commentTagMap.has(doc.languageId)) {
+        throw ErrInvalidLanguage;
+    }
+    return doc.languageId;
+}
+
+export function registerCmd(context: vscode.ExtensionContext, id: string, action: (...args: any[]) => any): void {
+    const disposable = vscode.commands.registerCommand(id, action);
+    context.subscriptions.push(disposable);
 }

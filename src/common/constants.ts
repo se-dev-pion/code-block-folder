@@ -1,3 +1,5 @@
+import { buildCmdId } from "./utils";
+
 // [CreateMappingFromLanguageToCommentPrefix]
 export const commentTagMap = new Map<string, string>();
 
@@ -69,3 +71,12 @@ export const configKeyEndingBorderColor: string = 'ending-border-color'; // [/]
 
 export const regexpMatchTags: RegExp = /\[.*\]:([0-9]+)/;
 export const exampleUrl: string = 'https://github.com/se-dev-pion/code-block-folder?tab=readme-ov-file#examples';
+
+export const builtInCmdOpen = 'vscode.open';
+export const builtInCmdFold = 'editor.fold';
+export const colorIdForeground = 'editor.foreground';
+export const colorIdBackground = 'editor.background';
+
+export const customCmdFold = buildCmdId('fold');
+export const customCmdSwitch2Number = buildCmdId('switch-to-number');
+export const customCmdSwitch2Tag = buildCmdId('switch-to-tag');

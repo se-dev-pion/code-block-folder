@@ -1,73 +1,63 @@
 import vscode, { Position } from 'vscode';
-import { commentTagMap, configKey, configKeyEndingBorderColor, configKeyTitleBackgroundColor, configKeyTitleTextColor, endTag, exampleUrl, regexpMatchTags, titlePrefix, titleSuffix } from './common/constants';
-import { debounced, registerFoldableBlocks } from './common/utils';
+import { builtInCmdFold, builtInCmdOpen, colorIdBackground, colorIdForeground, commentTagMap, configKey, configKeyEndingBorderColor, configKeyTitleBackgroundColor, configKeyTitleTextColor, customCmdFold, customCmdSwitch2Number, customCmdSwitch2Tag, endTag, exampleUrl, regexpMatchTags, titlePrefix, titleSuffix } from './common/constants';
+import { debounced, buildCmdUri, registerFoldableBlocks, getCurrentEditor, getDocLanguage, registerCmd } from './common/utils';
 
 let titleDecoration: vscode.TextEditorDecorationType;
 let endingDecoration: vscode.TextEditorDecorationType;
 export function highlightTitle(context: vscode.ExtensionContext) {
-    const foldHandler = vscode.commands.registerCommand("code-block-folder.fold", (startLine: number) => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            return;
+    registerCmd(context, customCmdFold, (startLine: number) => {
+        try {
+            const editor = getCurrentEditor();
+            const targetUri = editor.document.uri.with({ fragment: `L${startLine + 1}` });
+            vscode.commands.executeCommand(builtInCmdOpen, targetUri).then(() => {
+                vscode.commands.executeCommand(builtInCmdFold);
+            });
+        } catch (err) {
+            vscode.window.showErrorMessage((err as Error).message);
         }
-        const targetUri = editor.document.uri.with({ fragment: `L${startLine + 1}` });
-        vscode.commands.executeCommand("vscode.open", targetUri).then(() => {
-            vscode.commands.executeCommand("editor.fold");
-        });
     });
-    context.subscriptions.push(foldHandler);
-    const switch2NumberHandler = vscode.commands.registerCommand("code-block-folder.switch-to-number", (startLineIndex: number, endLineIndex: number) => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            return;
+    registerCmd(context, customCmdSwitch2Number, (startLineIndex: number, endLineIndex: number) => {
+        try {
+            const editor = getCurrentEditor();
+            const document = editor.document;
+            const language = getDocLanguage(document);
+            editor.edit((editBuilder: vscode.TextEditorEdit) => {
+                const startLine = document.lineAt(startLineIndex).text;
+                editBuilder.insert(new vscode.Position(startLineIndex, startLine.indexOf(titleSuffix) + 1), `:${endLineIndex + 1}`);
+                const endLine = document.lineAt(endLineIndex).text;
+                editBuilder.replace(new vscode.Range(
+                    new Position(endLineIndex, endLine.indexOf(commentTagMap.get(language)!)),
+                    new Position(endLineIndex, endLine.length)
+                ), '');
+            });
+        } catch (err) {
+            vscode.window.showErrorMessage((err as Error).message);
         }
-        const document = editor.document;
-        // [CheckLanguageSupport]
-        const language: string = document.languageId;
-        if (!commentTagMap.has(language)) {
-            vscode.window.showErrorMessage("Unsupported language type");
-            return;
-        } // [/]
-        editor.edit((editBuilder: vscode.TextEditorEdit) => {
-            const startLine = document.lineAt(startLineIndex).text;
-            editBuilder.insert(new vscode.Position(startLineIndex, startLine.indexOf(titleSuffix) + 1), `:${endLineIndex + 1}`);
-            const endLine = document.lineAt(endLineIndex).text;
-            editBuilder.replace(new vscode.Range(
-                new Position(endLineIndex, endLine.indexOf(commentTagMap.get(language)!)),
-                new Position(endLineIndex, endLine.length)
-            ), '');
-        });
     });
-    context.subscriptions.push(switch2NumberHandler);
-    const switch2TagHandler = vscode.commands.registerCommand("code-block-folder.switch-to-tag", (startLineIndex: number, endLineIndex: number) => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            return;
+    registerCmd(context, customCmdSwitch2Tag, (startLineIndex: number, endLineIndex: number) => {
+        try {
+            const editor = getCurrentEditor();
+            const document = editor.document;
+            const language = getDocLanguage(document);
+            editor.edit((editBuilder: vscode.TextEditorEdit) => {
+                const startLine = document.lineAt(startLineIndex).text;
+                const match = startLine.match(regexpMatchTags);
+                if (!match) {
+                    return;
+                }
+                const start = startLine.indexOf(titleSuffix) + 1;
+                const end = start + match[1].length + 1;
+                editBuilder.replace(new vscode.Range(
+                    new Position(startLineIndex, start),
+                    new Position(startLineIndex, end)
+                ), '');
+                const endLine = document.lineAt(endLineIndex).text;
+                editBuilder.insert(new vscode.Position(endLineIndex, endLine.length), commentTagMap.get(language) + endTag);
+            });
+        } catch (err) {
+            vscode.window.showErrorMessage((err as Error).message);
         }
-        const document = editor.document;
-        // [CheckLanguageSupport]
-        const language: string = document.languageId;
-        if (!commentTagMap.has(language)) {
-            vscode.window.showErrorMessage("Unsupported language type");
-            return;
-        } // [/]
-        editor.edit((editBuilder: vscode.TextEditorEdit) => {
-            const startLine = document.lineAt(startLineIndex).text;
-            const match = startLine.match(regexpMatchTags);
-            if (!match) {
-                return;
-            }
-            const start = startLine.indexOf(titleSuffix) + 1;
-            const end = start + match[1].length + 1;
-            editBuilder.replace(new vscode.Range(
-                new Position(startLineIndex, start),
-                new Position(startLineIndex, end)
-            ), '');
-            const endLine = document.lineAt(endLineIndex).text;
-            editBuilder.insert(new vscode.Position(endLineIndex, endLine.length), commentTagMap.get(language) + endTag);
-        });
     });
-    context.subscriptions.push(switch2TagHandler);
     const updateDecorations = debounced(async () => {
         for (const editor of vscode.window.visibleTextEditors) {
             const document: vscode.TextDocument = editor.document;
@@ -120,19 +110,19 @@ function buildDecoratedRanges(editor: vscode.TextEditor, lineToBeDecorated: vsco
     const docUri: vscode.Uri = editor.document.uri;
     const hoverMessage = new vscode.MarkdownString();
     hoverMessage.isTrusted = true;
-    let commandUri: string;
+    let cmdUri: string;
     let targetUri: vscode.Uri;
     const lineRange = `${startLine + 1}-${endLine + 1}`;
     if (lineToBeDecorated.lineNumber === startLine) {
-        commandUri = `command:code-block-folder.fold?${encodeURIComponent(JSON.stringify([startLine]))}`;
-        hoverMessage.appendMarkdown(` [Fold](${commandUri}): ${lineRange}`);
+        cmdUri = buildCmdUri(customCmdFold, startLine);
+        hoverMessage.appendMarkdown(` [Fold](${cmdUri}): ${lineRange}`);
         targetUri = docUri.with({ fragment: `L${endLine + 1}` });
         hoverMessage.appendMarkdown(` [Go to End](${targetUri})`);
         const titleLine = editor.document.lineAt(startLine).text;
         const match = titleLine.match(regexpMatchTags);
         if (match) {
-            const extraCommandUri = `command:code-block-folder.switch-to-tag?${encodeURIComponent(JSON.stringify([startLine, endLine]))}`;
-            const extraHoverMessage = new vscode.MarkdownString(` [Switch](${extraCommandUri})`);
+            const extraCmdUri = buildCmdUri(customCmdSwitch2Tag, startLine, endLine);
+            const extraHoverMessage = new vscode.MarkdownString(` [Switch](${extraCmdUri})`);
             extraHoverMessage.isTrusted = true;
             const start = rangeEnd.translate(0, 1);
             const end = start.translate(0, match[1].length);
@@ -142,8 +132,8 @@ function buildDecoratedRanges(editor: vscode.TextEditor, lineToBeDecorated: vsco
             });
         }
     } else {
-        commandUri = `command:code-block-folder.switch-to-number?${encodeURIComponent(JSON.stringify([startLine, endLine]))}`;
-        hoverMessage.appendMarkdown(` [Switch](${commandUri}): ${lineRange}`);
+        cmdUri = buildCmdUri(customCmdSwitch2Number, startLine, endLine);
+        hoverMessage.appendMarkdown(` [Switch](${cmdUri}): ${lineRange}`);
         targetUri = docUri.with({ fragment: `L${startLine + 1}` });
         hoverMessage.appendMarkdown(` [Back to Top](${targetUri}) -> \`${title}\``);
     }
@@ -165,13 +155,13 @@ function initDecorations() {
     const titleTextColor = vscode.workspace.getConfiguration(configKey).get(configKeyTitleTextColor) as string;
     const titleBackgroundColor = vscode.workspace.getConfiguration(configKey).get(configKeyTitleBackgroundColor) as string;
     titleDecoration = vscode.window.createTextEditorDecorationType({
-        backgroundColor: titleBackgroundColor || new vscode.ThemeColor('editor.foreground'),
-        color: titleTextColor || new vscode.ThemeColor('editor.background'),
+        backgroundColor: titleBackgroundColor || new vscode.ThemeColor(colorIdForeground),
+        color: titleTextColor || new vscode.ThemeColor(colorIdBackground),
         fontWeight: 'bold',
     });
     const endingBorderColor = vscode.workspace.getConfiguration(configKey).get(configKeyEndingBorderColor) as string;
     endingDecoration = vscode.window.createTextEditorDecorationType({
-        borderColor: endingBorderColor || new vscode.ThemeColor('editor.foreground'),
+        borderColor: endingBorderColor || new vscode.ThemeColor(colorIdForeground),
         borderWidth: '2px',
         borderStyle: 'solid',
     });
