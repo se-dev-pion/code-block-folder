@@ -78,7 +78,8 @@ export const colorIdBackground = 'editor.background'; // [/]
 // [CustomCommands]
 export const customCmdFold = buildCmdId('fold');
 export const customCmdSwitch2Number = buildCmdId('switch-to-number');
-export const customCmdSwitch2Tag = buildCmdId('switch-to-tag'); // [/]
+export const customCmdSwitch2Tag = buildCmdId('switch-to-tag');
+export const customCmdInsertFoldableBlock = buildCmdId('insert-foldable-block'); // [/]
 
 export const regexpMatchTags: RegExp = /\[.*\]:([0-9]+)/;
 export const exampleUrl: string = 'https://github.com/se-dev-pion/code-block-folder?tab=readme-ov-file#examples';

@@ -1,9 +1,9 @@
 import vscode from 'vscode';
-import { getCurrentEditor, getDocLanguage, hasSingleLineCommentSuffix, isSingleLineCommentWithPrefix } from './common/utils';
-import { commentTagMap, endTag, titlePrefix, titleSuffix } from './common/constants';
+import { getCurrentEditor, getDocLanguage, hasSingleLineCommentSuffix, isSingleLineCommentWithPrefix, registerCmd } from './common/utils';
+import { commentTagMap, customCmdInsertFoldableBlock, endTag, titlePrefix, titleSuffix } from './common/constants';
 
 export function registerFoldableBlockInserter(context: vscode.ExtensionContext) {
-    const disposable = vscode.commands.registerCommand("code-block-folder.insert-foldable-block", () => {
+    registerCmd(context, customCmdInsertFoldableBlock, () => {
         try {
             const editor = getCurrentEditor();
             const document: vscode.TextDocument = editor.document;
@@ -46,5 +46,4 @@ export function registerFoldableBlockInserter(context: vscode.ExtensionContext) 
             vscode.window.showErrorMessage((err as Error).message);
         }
     });
-    context.subscriptions.push(disposable);
 }
