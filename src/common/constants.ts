@@ -69,14 +69,16 @@ export const configKeyTitleTextColor: string = 'title-text-color';
 export const configKeyTitleBackgroundColor: string = 'title-background-color';
 export const configKeyEndingBorderColor: string = 'ending-border-color'; // [/]
 
-export const regexpMatchTags: RegExp = /\[.*\]:([0-9]+)/;
-export const exampleUrl: string = 'https://github.com/se-dev-pion/code-block-folder?tab=readme-ov-file#examples';
-
+// [RuntimeBuiltInConstants]
 export const builtInCmdOpen = 'vscode.open';
 export const builtInCmdFold = 'editor.fold';
 export const colorIdForeground = 'editor.foreground';
-export const colorIdBackground = 'editor.background';
+export const colorIdBackground = 'editor.background'; // [/]
 
+// [CustomCommands]
 export const customCmdFold = buildCmdId('fold');
 export const customCmdSwitch2Number = buildCmdId('switch-to-number');
-export const customCmdSwitch2Tag = buildCmdId('switch-to-tag');
+export const customCmdSwitch2Tag = buildCmdId('switch-to-tag'); // [/]
+
+export const regexpMatchTags: RegExp = /\[.*\]:([0-9]+)/;
+export const exampleUrl: string = 'https://github.com/se-dev-pion/code-block-folder?tab=readme-ov-file#examples';
