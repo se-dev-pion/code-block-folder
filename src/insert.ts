@@ -1,5 +1,6 @@
 import vscode from 'vscode';
-import { commentTagMap, endTag, hasSingleLineCommentSuffix, isSingleLineCommentWithPrefix, titlePrefix, titleSuffix } from './common';
+import { hasSingleLineCommentSuffix, isSingleLineCommentWithPrefix } from './common/utils';
+import { commentTagMap, endTag, titlePrefix, titleSuffix } from './common/constants';
 export function registerFoldableBlockInserter(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand("code-block-folder.insert-foldable-block", () => {
         // [CheckActiveEditor]

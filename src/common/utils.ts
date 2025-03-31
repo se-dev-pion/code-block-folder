@@ -1,62 +1,5 @@
 import vscode from 'vscode';
-
-// [CreateMappingFromLanguageToCommentPrefix]
-export const commentTagMap = new Map<string, string>();
-
-const languages1: string[] = [
-    'c',
-    'cpp',
-    'csharp',
-    'java',
-    'kotlin',
-    'dart',
-    'swift',
-    'javascript',
-    'typescript',
-    'vue',
-    'javascriptreact',
-    'typescriptreact',
-    'svelte',
-    'go',
-    'php',
-    'rust',
-    'odin',
-    'zig',
-    'd',
-    'v',
-    'scala',
-    'groovy',
-    'fsharp',
-    'scss',
-    'sass',
-    'less',
-    'stylus'
-];
-
-for (const language of languages1) {
-    commentTagMap.set(language, "// ");
-}
-
-const languages2: string[] = [
-    'python',
-    'ruby',
-    'shellscript',
-    'perl',
-    'nim'
-];
-
-for (const language of languages2) {
-    commentTagMap.set(language, "# ");
-}
-
-const languages3: string[] = [
-    'lua',
-    'sql'
-];
-
-for (const language of languages3) {
-    commentTagMap.set(language, "-- ");
-} // [/]
+import { commentTagMap, endTag, regexpMatchTags, titlePrefix } from './constants';
 
 export function isSingleLineCommentWithPrefix(line: string, language: string, prefix: string): boolean {
     return commentTagMap.has(language) && line.trim().startsWith(commentTagMap.get(language) + prefix);
@@ -65,11 +8,6 @@ export function isSingleLineCommentWithPrefix(line: string, language: string, pr
 export function hasSingleLineCommentSuffix(line: string, language: string, suffix: string): boolean {
     return commentTagMap.has(language) && line.trim().endsWith(commentTagMap.get(language) + suffix);
 }
-
-// [MarkerConstants]
-export const titlePrefix: string = "[";
-export const titleSuffix: string = "]";
-export const endTag: string = titlePrefix + "/" + titleSuffix; // [/]
 
 // [DetectAndRecordFoldableBlocks]
 interface Handler<T> {
@@ -118,10 +56,3 @@ export function debounced<T extends Function>(func: T, wait: number): T {
     };
     return f as T;
 }
-
-export const regexpMatchTags: RegExp = /\[.*\]:([0-9]+)/;
-export const configKey: string = 'code-block-folder';
-export const configKeyTitleTextColor: string = 'title-text-color';
-export const configKeyTitleBackgroundColor: string = 'title-background-color';
-export const configKeyEndingBorderColor: string = 'ending-border-color';
-export const exampleUrl: string = 'https://github.com/se-dev-pion/code-block-folder?tab=readme-ov-file#examples';

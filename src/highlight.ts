@@ -1,5 +1,6 @@
 import vscode, { Position } from 'vscode';
-import { commentTagMap, configKey, configKeyEndingBorderColor, configKeyTitleBackgroundColor, configKeyTitleTextColor, debounced, endTag, exampleUrl, regexpMatchTags, registerFoldableBlocks, titlePrefix, titleSuffix } from './common';
+import { commentTagMap, configKey, configKeyEndingBorderColor, configKeyTitleBackgroundColor, configKeyTitleTextColor, endTag, exampleUrl, regexpMatchTags, titlePrefix, titleSuffix } from './common/constants';
+import { debounced, registerFoldableBlocks } from './common/utils';
 
 let titleDecoration: vscode.TextEditorDecorationType;
 let endingDecoration: vscode.TextEditorDecorationType;
