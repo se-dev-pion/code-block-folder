@@ -11,7 +11,7 @@ export function loadFolder(context: vscode.ExtensionContext) {
                     const start = stack.pop() as number;
                     return [new vscode.FoldingRange(start, end, vscode.FoldingRangeKind.Region)];
                 };
-                return registerFoldableBlocks(document, handler); // [/]
+                return registerFoldableBlocks(document, handler, false); // [/]
             }
         });
         context.subscriptions.push(disposable);

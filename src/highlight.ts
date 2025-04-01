@@ -72,7 +72,8 @@ export function highlightTitle(context: vscode.ExtensionContext) {
                 const title = extractTitle(lineToBeDecorated.text);
                 return buildDecoratedRanges(editor, lineToBeDecorated, rangeStart, rangeEnd, start, end, title);
             };
-            editor.setDecorations(titleDecoration, registerFoldableBlocks(document, handleTitle)); // [/]
+            const titles = registerFoldableBlocks(document, handleTitle, true);
+            editor.setDecorations(titleDecoration, titles); // [/]
             // [AddHighlightToEndings]
             const handleEnding = (document: vscode.TextDocument, stack: number[], end: number) => {
                 const start = stack.pop() as number;
@@ -84,7 +85,7 @@ export function highlightTitle(context: vscode.ExtensionContext) {
                 const title = extractTitle(document.lineAt(start).text);
                 return buildDecoratedRanges(editor, lineToBeDecorated, rangeStart, rangeEnd, start, end, title);
             };
-            const endings = registerFoldableBlocks(document, handleEnding);
+            const endings = registerFoldableBlocks(document, handleEnding, false);
             editor.setDecorations(endingDecoration, endings); // [/]
         }
     }, 50);

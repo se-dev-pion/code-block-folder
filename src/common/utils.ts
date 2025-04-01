@@ -14,7 +14,7 @@ export function hasSingleLineCommentSuffix(line: string, language: string, suffi
 interface Handler<T> {
     (document: vscode.TextDocument, stack: number[], end: number): T[];
 }
-export function registerFoldableBlocks<T>(document: vscode.TextDocument, handler: Handler<T>): T[] {
+export function registerFoldableBlocks<T>(document: vscode.TextDocument, handler: Handler<T>, onlyHandleTitle: boolean): T[] {
     // [Preparation]
     const collections = new Array<T>();
     const language: string = document.languageId;
@@ -24,6 +24,9 @@ export function registerFoldableBlocks<T>(document: vscode.TextDocument, handler
         // [StoreIndexOfLineWithStartMarker]
         if (isSingleLineCommentWithPrefix(line.text, language, titlePrefix) && !isSingleLineCommentWithPrefix(line.text, language, endTag)) {
             stack.push(i);
+            if (!onlyHandleTitle) {
+                continue;
+            }
             // [HandleStartMarkerWithEndingLineNumber]
             const match = regexpMatchTags.exec(line.text);
             if (match) {
