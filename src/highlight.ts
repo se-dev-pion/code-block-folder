@@ -62,30 +62,10 @@ export function highlightTitle(context: vscode.ExtensionContext) {
         for (const editor of vscode.window.visibleTextEditors) {
             const document: vscode.TextDocument = editor.document;
             // [AddHighlightToTitles]
-            const handleTitle = (document: vscode.TextDocument, stack: number[], end: number) => {
-                const start = stack.pop() as number;
-                const lineToBeDecorated = document.lineAt(start);
-                const leftBorder = lineToBeDecorated.text.indexOf(titlePrefix);
-                const rightBorder = lineToBeDecorated.text.indexOf(titleSuffix);
-                const rangeStart = lineToBeDecorated.range.start.translate(0, leftBorder);
-                const rangeEnd = (rightBorder !== -1) ? lineToBeDecorated.range.start.translate(0, rightBorder + 1) : lineToBeDecorated.range.end;
-                const title = extractTitle(lineToBeDecorated.text);
-                return buildDecoratedRanges(editor, lineToBeDecorated, rangeStart, rangeEnd, start, end, title);
-            };
-            const titles = registerFoldableBlocks(document, handleTitle, true);
+            const titles = registerFoldableBlocks(document, decorateTitle, true);
             editor.setDecorations(titleDecoration, titles); // [/]
             // [AddHighlightToEndings]
-            const handleEnding = (document: vscode.TextDocument, stack: number[], end: number) => {
-                const start = stack.pop() as number;
-                const lineToBeDecorated = document.lineAt(end);
-                const leftBorder = lineToBeDecorated.text.indexOf(endTag);
-                const rightBorder = leftBorder + endTag.length;
-                const rangeStart = lineToBeDecorated.range.start.translate(0, leftBorder);
-                const rangeEnd = lineToBeDecorated.range.start.translate(0, rightBorder + 1);
-                const title = extractTitle(document.lineAt(start).text);
-                return buildDecoratedRanges(editor, lineToBeDecorated, rangeStart, rangeEnd, start, end, title);
-            };
-            const endings = registerFoldableBlocks(document, handleEnding, false);
+            const endings = registerFoldableBlocks(document, decorateEnding, false);
             editor.setDecorations(endingDecoration, endings); // [/]
         }
     }, 50);
@@ -105,10 +85,32 @@ export function highlightTitle(context: vscode.ExtensionContext) {
     vscode.window.onDidChangeTextEditorSelection(updateDecorations); // [/]
 }
 
-function buildDecoratedRanges(editor: vscode.TextEditor, lineToBeDecorated: vscode.TextLine, rangeStart: vscode.Position, rangeEnd: vscode.Position, startLine: number, endLine: number, title: string): vscode.DecorationOptions[] {
+function decorateTitle(document: vscode.TextDocument, stack: number[], end: number) {
+    const start = stack.pop() as number;
+    const lineToBeDecorated = document.lineAt(start);
+    const leftBorder = lineToBeDecorated.text.indexOf(titlePrefix);
+    const rightBorder = lineToBeDecorated.text.indexOf(titleSuffix);
+    const rangeStart = lineToBeDecorated.range.start.translate(0, leftBorder);
+    const rangeEnd = (rightBorder !== -1) ? lineToBeDecorated.range.start.translate(0, rightBorder + 1) : lineToBeDecorated.range.end;
+    const title = extractTitle(lineToBeDecorated.text);
+    return buildDecoratedRanges(document, lineToBeDecorated, rangeStart, rangeEnd, start, end, title);
+}
+
+function decorateEnding(document: vscode.TextDocument, stack: number[], end: number) {
+    const start = stack.pop() as number;
+    const lineToBeDecorated = document.lineAt(end);
+    const leftBorder = lineToBeDecorated.text.indexOf(endTag);
+    const rightBorder = leftBorder + endTag.length;
+    const rangeStart = lineToBeDecorated.range.start.translate(0, leftBorder);
+    const rangeEnd = lineToBeDecorated.range.start.translate(0, rightBorder + 1);
+    const title = extractTitle(document.lineAt(start).text);
+    return buildDecoratedRanges(document, lineToBeDecorated, rangeStart, rangeEnd, start, end, title);
+};
+
+function buildDecoratedRanges(document: vscode.TextDocument, lineToBeDecorated: vscode.TextLine, rangeStart: vscode.Position, rangeEnd: vscode.Position, startLine: number, endLine: number, title: string): vscode.DecorationOptions[] {
     const rangesToDecorate = new Array<vscode.DecorationOptions>();
     const range: vscode.Range = lineToBeDecorated.range.with(rangeStart, rangeEnd);
-    const docUri: vscode.Uri = editor.document.uri;
+    const docUri: vscode.Uri = document.uri;
     const hoverMessage = new vscode.MarkdownString();
     hoverMessage.isTrusted = true;
     let cmdUri: string;
@@ -119,7 +121,7 @@ function buildDecoratedRanges(editor: vscode.TextEditor, lineToBeDecorated: vsco
         hoverMessage.appendMarkdown(` [Fold](${cmdUri}): ${lineRange}`);
         targetUri = docUri.with({ fragment: `L${endLine + 1}` });
         hoverMessage.appendMarkdown(` [Go to End](${targetUri})`);
-        const titleLine = editor.document.lineAt(startLine).text;
+        const titleLine = document.lineAt(startLine).text;
         const match = titleLine.match(regexpMatchTags);
         if (match) {
             const extraCmdUri = buildCmdUri(customCmdSwitch2Tag, startLine, endLine);
