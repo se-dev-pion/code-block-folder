@@ -1,6 +1,6 @@
-import { registerFoldableBlocks } from './common/utils';
 import vscode from 'vscode';
-import { commentTagMap } from './common/constants';
+import { commentTagMap } from '../common/constants';
+import { registerFoldableBlocks } from '../logics/scan';
 
 export function loadFolder(context: vscode.ExtensionContext) {
     for (const language of commentTagMap.keys()) {
