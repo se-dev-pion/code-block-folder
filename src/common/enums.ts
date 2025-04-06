@@ -5,3 +5,9 @@ export enum CommandID {
     Switch2Tag = 'switch-to-tag',
     EditorMode = 'editor-mode'
 }
+
+export enum ModeForHandlingFoldableBlocks {
+    Both,
+    Title,
+    Ending
+}

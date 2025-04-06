@@ -4,6 +4,7 @@ import { debounced } from '../common/utils';
 import { registerFoldableBlocks } from '../logics/scan';
 import { decorateEnding, decorateTitle } from '../logics/decorate';
 import { backToTopButton, exampleButton, foldButton, goToEndButton, switch2NumberButton, switch2TagButton } from '../logics/buttons';
+import { ModeForHandlingFoldableBlocks } from '../common/enums';
 
 let titleDecoration: vscode.TextEditorDecorationType;
 let endingDecoration: vscode.TextEditorDecorationType;
@@ -14,13 +15,13 @@ export function addHighlight() {
             const titles = registerFoldableBlocks(editor.document,
                 (document: vscode.TextDocument, stack: number[], end: number) => {
                     return buildDecoratedRanges(...decorateTitle(document, stack, end));
-                }, true);
+                }, ModeForHandlingFoldableBlocks.Title);
             editor.setDecorations(titleDecoration, titles); // [/]
             // [AddHighlightToEndings]
             const endings = registerFoldableBlocks(editor.document,
                 (document: vscode.TextDocument, stack: number[], end: number) => {
                     return buildDecoratedRanges(...decorateEnding(document, stack, end));
-                }, false);
+                }, ModeForHandlingFoldableBlocks.Ending);
             editor.setDecorations(endingDecoration, endings); // [/]
         }
     }, 50);

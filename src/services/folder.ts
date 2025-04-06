@@ -1,6 +1,7 @@
 import vscode from 'vscode';
 import { commentTagMap } from '../common/constants';
 import { registerFoldableBlocks } from '../logics/scan';
+import { ModeForHandlingFoldableBlocks } from '../common/enums';
 
 export function loadFolder(context: vscode.ExtensionContext) {
     for (const language of commentTagMap.keys()) {
@@ -11,7 +12,7 @@ export function loadFolder(context: vscode.ExtensionContext) {
                     const start = stack.pop() as number;
                     return [new vscode.FoldingRange(start, end, vscode.FoldingRangeKind.Region)];
                 };
-                return registerFoldableBlocks(document, handler, false); // [/]
+                return registerFoldableBlocks(document, handler, ModeForHandlingFoldableBlocks.Both); // [/]
             }
         });
         context.subscriptions.push(disposable);

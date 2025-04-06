@@ -1,13 +1,14 @@
 import vscode from 'vscode';
 import { hasSingleLineCommentSuffix, isSingleLineCommentWithPrefix } from '../common/utils';
 import { endTag, regexpMatchTags, titlePrefix } from '../common/constants';
+import { ModeForHandlingFoldableBlocks } from '../common/enums';
 
 // [DetectAndRecordFoldableBlocks]
 interface Handler<T> {
     (document: vscode.TextDocument, stack: number[], end: number): T[];
 }
 
-export function registerFoldableBlocks<T>(document: vscode.TextDocument, handler: Handler<T>, onlyHandleTitle: boolean): T[] {
+export function registerFoldableBlocks<T>(document: vscode.TextDocument, handler: Handler<T>, mode: ModeForHandlingFoldableBlocks): T[] {
     // [Preparation]
     const collections = new Array<T>();
     const language: string = document.languageId;
@@ -17,12 +18,13 @@ export function registerFoldableBlocks<T>(document: vscode.TextDocument, handler
         // [StoreIndexOfLineWithStartMarker]
         if (isSingleLineCommentWithPrefix(line.text, language, titlePrefix) && !isSingleLineCommentWithPrefix(line.text, language, endTag)) {
             stack.push(i);
-            if (!onlyHandleTitle) {
-                continue;
-            }
             // [HandleStartMarkerWithEndingLineNumber]
             const match = regexpMatchTags.exec(line.text);
             if (match) {
+                if (mode === ModeForHandlingFoldableBlocks.Ending) {
+                    stack.pop();
+                    continue;
+                }
                 const j = Number(match[1]) - 1;
                 if (j > i) {
                     collections.push(...handler(document, stack, j));
