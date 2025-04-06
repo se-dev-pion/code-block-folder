@@ -24,10 +24,10 @@ export class Switch2TagCommand extends CommandTemplate {
                 }
                 const start = startLine.indexOf(titleSuffix) + 1;
                 const end = start + match[1].length + 1;
-                editBuilder.replace(new vscode.Range(
+                editBuilder.delete(new vscode.Range(
                     new vscode.Position(startLineIndex, start),
                     new vscode.Position(startLineIndex, end)
-                ), '');
+                ));
                 const endLine = document.lineAt(endLineIndex).text;
                 editBuilder.insert(new vscode.Position(endLineIndex, endLine.length), commentTagMap.get(language) + endTag);
             });
