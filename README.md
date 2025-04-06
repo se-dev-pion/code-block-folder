@@ -6,7 +6,7 @@
 
 A simple Visual Studio Code extension enabling customized code folding with comments to make it easier to read codes.
 
-***Attention***: Any new feature of this extension will only be tested in [`VSCode`](https://code.visualstudio.com/), [`Cursor`](https://code.visualstudio.com/) and [`Windsurf`](https://codeium.com/windsurf), compatibility with other platforms (such as [`Positron`](https://positron.posit.co/), [`Trae`](https://www.trae.ai/)) is not ensured.
+***Attention***: Any new feature of this extension will be tested in [`VSCode`](https://code.visualstudio.com/), [`Cursor`](https://code.visualstudio.com/), [`Windsurf`](https://codeium.com/windsurf) and [`Trae`](https://www.trae.ai/).
 
 > If you found it helpful, please give a ⭐ on [GitHub](https://github.com/se-dev-pion/code-block-folder) and share it with your friends!
 
@@ -42,6 +42,9 @@ A simple Visual Studio Code extension enabling customized code folding with comm
 - `jsx`
 - `tsx`
 - `svelte`
+- `sass` & `scss`
+- `less`
+- `stylus`
 
 ## Examples
 
@@ -52,3 +55,5 @@ A simple Visual Studio Code extension enabling customized code folding with comm
 3. Line hint and quick jumping.![quick_jump.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/images/quick_jump.gif)
 
 4. Quick folding and unfolding.![quick_fold.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/images/quick_fold.gif)
+
+5. Switch between single-line marker and paired ones.![switch_mode.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/images/switch_mode.gif)
