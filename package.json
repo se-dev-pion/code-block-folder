@@ -72,6 +72,10 @@
       {
         "command": "code-block-folder.insert-foldable-block",
         "title": "Enable Code Block Folding"
+      },
+      {
+        "command": "code-block-folder.editor-mode",
+        "title": "Switch to Editor Mode"
       }
     ],
     "keybindings": [
