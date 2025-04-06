@@ -76,6 +76,10 @@
       {
         "command": "code-block-folder.editor-mode",
         "title": "Switch to Editor Mode"
+      },
+      {
+        "command": "code-block-folder.reader-mode",
+        "title": "Switch to Reader Mode"
       }
     ],
     "keybindings": [

@@ -4,8 +4,7 @@ import { CommandTemplate } from './common/templates';
 import { Command } from './common/interfaces';
 import { CommandID } from '../common/enums';
 import { commentTagMap, endTag, regexpMatchTags, titlePrefix } from '../common/constants';
-
-type editFunc = (editBuilder: vscode.TextEditorEdit) => void;
+import { EditFunc } from './common/types';
 
 export class EditorModeCommand extends CommandTemplate {
     private static _command = new EditorModeCommand();
@@ -17,7 +16,7 @@ export class EditorModeCommand extends CommandTemplate {
         try {
             const editor = getCurrentEditor();
             const language = getDocLanguage(editor.document);
-            const editsToDo = new Array<editFunc>();
+            const editsToDo = new Array<EditFunc>();
             for (let i = 0; i < editor.document.lineCount; i++) {
                 const line = editor.document.lineAt(i);
                 if (!isSingleLineCommentWithPrefix(line.text, language, titlePrefix)) {
@@ -42,7 +41,7 @@ export class EditorModeCommand extends CommandTemplate {
                 });
             }
             editor.edit((editBuilder: vscode.TextEditorEdit) => {
-                editsToDo.forEach((f: editFunc) => f(editBuilder));
+                editsToDo.forEach((f: EditFunc) => f(editBuilder));
             });
         } catch (err) {
             vscode.window.showErrorMessage((err as Error).message);
