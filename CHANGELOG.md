@@ -2,7 +2,7 @@
 
 All notable changes to the "code-block-folder" extension will be documented in this file.
 
-## [v0.3.0-v0.3.2]
+## [v0.3.0-v0.3.4]
 
 - Feature: [single-line markers](https://github.com/se-dev-pion/code-block-folder/issues/31)
 - Feature: [mode switch](https://github.com/se-dev-pion/code-block-folder/issues/31)
