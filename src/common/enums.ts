@@ -1,4 +1,4 @@
-export enum CommandID {
+export const enum CommandID {
     Fold = 'fold',
     Insert = 'insert-foldable-block',
     Switch2Number = 'switch-to-number',
@@ -7,7 +7,7 @@ export enum CommandID {
     ReaderMode = 'reader-mode'
 }
 
-export enum ModeForHandlingFoldableBlocks {
+export const enum ModeForHandlingFoldableBlocks {
     Both,
     Title,
     Ending

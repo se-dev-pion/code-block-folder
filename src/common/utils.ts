@@ -2,17 +2,17 @@ import vscode from 'vscode';
 import { commentTagMap } from './constants';
 import { ErrInvalidLanguage, ErrNoActiveEditor } from './errors';
 
-export function isSingleLineCommentWithPrefix(line: string, language: string, prefix: string): boolean {
+export function isSingleLineCommentWithPrefix(line: string, language: string, prefix: string) {
     return commentTagMap.has(language) && line.trim().startsWith(commentTagMap.get(language) + prefix);
 }
 
-export function hasSingleLineCommentSuffix(line: string, language: string, suffix: string): boolean {
+export function hasSingleLineCommentSuffix(line: string, language: string, suffix: string) {
     return commentTagMap.has(language) && line.trim().endsWith(commentTagMap.get(language) + suffix);
 }
 
-export function debounced<T extends Function>(func: T, wait: number): T {
+export function debounced<T extends Function>(func: T, wait: number) {
     let timeout: NodeJS.Timeout | null = null;
-    const f: Function = (...args: any[]): void => {
+    const f = (...args: any[]): void => {
         if (timeout !== null) {
             clearTimeout(timeout);
         }
@@ -20,10 +20,10 @@ export function debounced<T extends Function>(func: T, wait: number): T {
             func(...args);
         }, wait);
     };
-    return f as T;
+    return f as Function as T;
 }
 
-export function getCurrentEditor(): vscode.TextEditor {
+export function getCurrentEditor() {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
         throw ErrNoActiveEditor;
@@ -31,7 +31,7 @@ export function getCurrentEditor(): vscode.TextEditor {
     return editor;
 }
 
-export function getDocLanguage(doc: vscode.TextDocument): string {
+export function getDocLanguage(doc: vscode.TextDocument) {
     if (!commentTagMap.has(doc.languageId)) {
         throw ErrInvalidLanguage;
     }

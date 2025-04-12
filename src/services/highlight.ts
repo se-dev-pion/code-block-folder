@@ -41,9 +41,9 @@ export function addHighlight() {
     vscode.window.onDidChangeTextEditorSelection(updateDecorations); // [/]
 }
 
-function buildDecoratedRanges(document: vscode.TextDocument, lineToBeDecorated: vscode.TextLine, rangeStart: vscode.Position, rangeEnd: vscode.Position, startLine: number, endLine: number, title: string): vscode.DecorationOptions[] {
+function buildDecoratedRanges(document: vscode.TextDocument, lineToBeDecorated: vscode.TextLine, rangeStart: vscode.Position, rangeEnd: vscode.Position, startLine: number, endLine: number, title: string) {
     const rangesToDecorate = new Array<vscode.DecorationOptions>();
-    const range: vscode.Range = lineToBeDecorated.range.with(rangeStart, rangeEnd);
+    const range = lineToBeDecorated.range.with(rangeStart, rangeEnd);
     const hoverMessage = new vscode.MarkdownString();
     hoverMessage.isTrusted = true;
     const lineRange = `${startLine + 1}-${endLine + 1}`;

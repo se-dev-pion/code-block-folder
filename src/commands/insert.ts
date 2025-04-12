@@ -25,10 +25,10 @@ export class InsertCommand extends CommandTemplate {
             const language = getDocLanguage(document);
             // [GenerateInsertions]
             const commentTag = commentTagMap.get(language) as string;
-            const head: string = commentTag + titlePrefix + titleSuffix + '\n';
-            const tail: string = commentTag + endTag; // [/]
+            const head = commentTag + titlePrefix + titleSuffix + '\n';
+            const tail = commentTag + endTag; // [/]
             // [InsertWithoutTextSelection]
-            const selection: vscode.Selection = editor.selection;
+            const selection = editor.selection;
             editor.edit(selection.isEmpty
                 ? (editBuilder: vscode.TextEditorEdit) => {
                     editBuilder.insert(editor.selection.active, head + tail);
