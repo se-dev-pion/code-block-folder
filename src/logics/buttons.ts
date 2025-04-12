@@ -31,4 +31,4 @@ export function switch2TagButton(startLine: number, endLine: number): MarkdownLi
     return ` [Switch](${cmdUri})`;
 }
 
-export const exampleButton = ` [See Examples](${exampleUrl})`;
+export const exampleButton: MarkdownLink = ` [See Examples](${exampleUrl})`;

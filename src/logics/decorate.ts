@@ -1,9 +1,7 @@
 import vscode from 'vscode';
 import { endTag, titlePrefix, titleSuffix } from '../common/constants';
 
-type DecorateInfo = [vscode.TextDocument, vscode.TextLine, vscode.Position, vscode.Position, number, number, string];
-
-export function decorateTitle(document: vscode.TextDocument, stack: number[], end: number): DecorateInfo {
+export function decorateTitle(document: vscode.TextDocument, stack: number[], end: number) {
     const start = stack.pop() as number;
     const lineToBeDecorated = document.lineAt(start);
     const leftBorder = lineToBeDecorated.text.indexOf(titlePrefix);
@@ -11,10 +9,10 @@ export function decorateTitle(document: vscode.TextDocument, stack: number[], en
     const rangeStart = lineToBeDecorated.range.start.translate(0, leftBorder);
     const rangeEnd = (rightBorder !== -1) ? lineToBeDecorated.range.start.translate(0, rightBorder + 1) : lineToBeDecorated.range.end;
     const title = extractTitle(lineToBeDecorated.text);
-    return [document, lineToBeDecorated, rangeStart, rangeEnd, start, end, title];
+    return [document, lineToBeDecorated, rangeStart, rangeEnd, start, end, title] as const;
 }
 
-export function decorateEnding(document: vscode.TextDocument, stack: number[], end: number): DecorateInfo {
+export function decorateEnding(document: vscode.TextDocument, stack: number[], end: number) {
     const start = stack.pop() as number;
     const lineToBeDecorated = document.lineAt(end);
     const leftBorder = lineToBeDecorated.text.indexOf(endTag);
@@ -22,12 +20,12 @@ export function decorateEnding(document: vscode.TextDocument, stack: number[], e
     const rangeStart = lineToBeDecorated.range.start.translate(0, leftBorder);
     const rangeEnd = lineToBeDecorated.range.start.translate(0, rightBorder + 1);
     const title = extractTitle(document.lineAt(start).text);
-    return [document, lineToBeDecorated, rangeStart, rangeEnd, start, end, title];
+    return [document, lineToBeDecorated, rangeStart, rangeEnd, start, end, title] as const;
 };
 
-function extractTitle(line: string): string {
-    const left: number = line.indexOf(titlePrefix);
-    for (let right: number = left; right < line.length; right++) {
+function extractTitle(line: string) {
+    const left = line.indexOf(titlePrefix);
+    for (let right = left; right < line.length; right++) {
         if (line[right] === titleSuffix) {
             return line.substring(left, right + 1);
         }

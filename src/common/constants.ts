@@ -1,7 +1,7 @@
 // [CreateMappingFromLanguageToCommentPrefix]
 export const commentTagMap = new Map<string, string>();
 
-const languages1: string[] = [
+const languages1 = [
     'c',
     'cpp',
     'csharp',
@@ -29,43 +29,43 @@ const languages1: string[] = [
     'sass',
     'less',
     'stylus'
-];
+] as const;
 
 for (const language of languages1) {
     commentTagMap.set(language, "// ");
 }
 
-const languages2: string[] = [
+const languages2 = [
     'python',
     'ruby',
     'shellscript',
     'perl',
     'nim'
-];
+] as const;
 
 for (const language of languages2) {
     commentTagMap.set(language, "# ");
 }
 
-const languages3: string[] = [
+const languages3 = [
     'lua',
     'sql'
-];
+] as const;
 
 for (const language of languages3) {
     commentTagMap.set(language, "-- ");
 } // [/]
 
 // [MarkerConstants]
-export const titlePrefix: string = "[";
-export const titleSuffix: string = "]";
-export const endTag: string = titlePrefix + "/" + titleSuffix; // [/]
+export const titlePrefix = "[";
+export const titleSuffix = "]";
+export const endTag = titlePrefix + "/" + titleSuffix; // [/]
 
 // [ConfigKeys]
 export const configKey = 'code-block-folder';
-export const configKeyTitleTextColor: string = 'title-text-color';
-export const configKeyTitleBackgroundColor: string = 'title-background-color';
-export const configKeyEndingBorderColor: string = 'ending-border-color'; // [/]
+export const configKeyTitleTextColor = 'title-text-color';
+export const configKeyTitleBackgroundColor = 'title-background-color';
+export const configKeyEndingBorderColor = 'ending-border-color'; // [/]
 
 // [RuntimeBuiltInConstants]
 export const builtInCmdOpen = 'vscode.open';
@@ -73,5 +73,5 @@ export const builtInCmdFold = 'editor.fold';
 export const colorIdForeground = 'editor.foreground';
 export const colorIdBackground = 'editor.background'; // [/]
 
-export const regexpMatchTags: RegExp = /\[.*\]:([0-9]+)/;
-export const exampleUrl: string = 'https://github.com/se-dev-pion/code-block-folder?tab=readme-ov-file#examples';
+export const regexpMatchTags = /\[.*\]:([0-9]+)/;
+export const exampleUrl = 'https://github.com/se-dev-pion/code-block-folder?tab=readme-ov-file#examples';
