@@ -1,6 +1,6 @@
 # code-block-folder
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/se-dev-pion/code-block-folder?color=11bb1f) ![GitHub License](https://img.shields.io/github/license/se-dev-pion/code-block-folder?color=282661) ![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/se-dev-pion.code-block-folder?label=ms-market+downloads&color=0078d4) ![Open VSX Downloads](https://img.shields.io/open-vsx/dt/se-dev-pion/code-block-folder?label=open-vsx+downloads&color=c160ef)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/se-dev-pion/code-block-folder?color=11bb1f) ![GitHub License](https://img.shields.io/github/license/se-dev-pion/code-block-folder?color=282661) [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/se-dev-pion.code-block-folder?label=ms-market+downloads&color=0078d4)](https://marketplace.visualstudio.com/items?itemName=se-dev-pion.code-block-folder) [![Open VSX Downloads](https://img.shields.io/open-vsx/dt/se-dev-pion/code-block-folder?label=open-vsx+downloads&color=c160ef)](https://open-vsx.org/extension/se-dev-pion/code-block-folder)
 
 ## Introduction
 
