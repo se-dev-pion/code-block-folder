@@ -50,7 +50,7 @@ export class InsertCommand extends CommandTemplate {
                     extraSeparator = isSingleLineCommentWithPrefix(startLine.text, language, '') ? '\n' : '';
                     editBuilder.insert(new vscode.Position(selection.start.line, 0), prefixBlanks + head + extraSeparator); // [/]
                 }).then((success: boolean) => {
-                    this.moveCursor(success, editor);
+                    InsertCommand._command.moveCursor(success, editor);
                 }); // [/]
         } catch (err) {
             vscode.window.showErrorMessage((err as Error).message);
