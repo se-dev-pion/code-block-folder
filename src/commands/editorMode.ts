@@ -33,11 +33,13 @@ export class EditorModeCommand extends CommandTemplate {
                 const end = match.index! + match[0].length;
                 const start = end - (match[1].length + 1);
                 editsToDo.push((editBuilder: vscode.TextEditorEdit) => {
-                    editBuilder.delete(new vscode.Range(
-                        new vscode.Position(i, start),
-                        new vscode.Position(i, end)
-                    ));
-                    editBuilder.insert(editor.document.lineAt(num - 1).range.end, ' ' + commentTagMap.get(language) + endTag);
+                    editBuilder.delete(
+                        new vscode.Range(new vscode.Position(i, start), new vscode.Position(i, end))
+                    );
+                    editBuilder.insert(
+                        editor.document.lineAt(num - 1).range.end,
+                        ' ' + commentTagMap.get(language) + endTag
+                    );
                 });
             }
             editor.edit((editBuilder: vscode.TextEditorEdit) => {

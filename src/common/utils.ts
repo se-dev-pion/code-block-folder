@@ -3,11 +3,15 @@ import { commentTagMap } from './constants';
 import { ErrInvalidLanguage, ErrNoActiveEditor } from './errors';
 
 export function isSingleLineCommentWithPrefix(line: string, language: string, prefix: string) {
-    return commentTagMap.has(language) && line.trim().startsWith(commentTagMap.get(language) + prefix);
+    return (
+        commentTagMap.has(language) && line.trim().startsWith(commentTagMap.get(language) + prefix)
+    );
 }
 
 export function hasSingleLineCommentSuffix(line: string, language: string, suffix: string) {
-    return commentTagMap.has(language) && line.trim().endsWith(commentTagMap.get(language) + suffix);
+    return (
+        commentTagMap.has(language) && line.trim().endsWith(commentTagMap.get(language) + suffix)
+    );
 }
 
 export function debounced<T extends Function>(func: T, wait: number) {

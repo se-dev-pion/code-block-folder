@@ -8,14 +8,21 @@ interface Handler<T> {
     (document: vscode.TextDocument, stack: number[], end: number): T[];
 }
 
-export function registerFoldableBlocks<T>(document: vscode.TextDocument, handler: Handler<T>, mode: ModeForHandlingFoldableBlocks) {
+export function registerFoldableBlocks<T>(
+    document: vscode.TextDocument,
+    handler: Handler<T>,
+    mode: ModeForHandlingFoldableBlocks
+) {
     // [Preparation]
     const collections = new Array<T>();
     const stack = new Array<number>(); // [/]
     for (let i = 0; i < document.lineCount; i++) {
         const line = document.lineAt(i);
         // [StoreIndexOfLineWithStartMarker]
-        if (isSingleLineCommentWithPrefix(line.text, document.languageId, titlePrefix) && !isSingleLineCommentWithPrefix(line.text, document.languageId, endTag)) {
+        if (
+            isSingleLineCommentWithPrefix(line.text, document.languageId, titlePrefix) &&
+            !isSingleLineCommentWithPrefix(line.text, document.languageId, endTag)
+        ) {
             stack.push(i);
             // [HandleStartMarkerWithEndingLineNumber]
             const match = regexpMatchTags.exec(line.text);

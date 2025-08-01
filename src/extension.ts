@@ -4,7 +4,7 @@ import { addHighlight } from './services/highlight';
 import { initCommands } from './commands';
 
 export function activate(context: vscode.ExtensionContext) {
-	initCommands(context);
-	loadFolder(context);
-	addHighlight();
+    initCommands(context);
+    loadFolder(context);
+    addHighlight();
 }

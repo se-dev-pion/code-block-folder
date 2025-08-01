@@ -21,15 +21,29 @@ export class ReaderModeCommand extends CommandTemplate {
                 const start = stack.pop() as number;
                 const startLine = document.lineAt(start);
                 const endLine = document.lineAt(end);
-                return [(editBuilder: vscode.TextEditorEdit) => {
-                    editBuilder.delete(new vscode.Range(
-                        new vscode.Position(end, endLine.text.indexOf(' ' + commentTagMap.get(language) + endTag)),
-                        endLine.range.end
-                    ));
-                    editBuilder.insert(new vscode.Position(start, startLine.text.indexOf(titleSuffix) + 1), `:${end + 1}`);
-                }];
+                return [
+                    (editBuilder: vscode.TextEditorEdit) => {
+                        editBuilder.delete(
+                            new vscode.Range(
+                                new vscode.Position(
+                                    end,
+                                    endLine.text.indexOf(' ' + commentTagMap.get(language) + endTag)
+                                ),
+                                endLine.range.end
+                            )
+                        );
+                        editBuilder.insert(
+                            new vscode.Position(start, startLine.text.indexOf(titleSuffix) + 1),
+                            `:${end + 1}`
+                        );
+                    }
+                ];
             };
-            const editsToDo = registerFoldableBlocks(editor.document, handler, ModeForHandlingFoldableBlocks.Ending);
+            const editsToDo = registerFoldableBlocks(
+                editor.document,
+                handler,
+                ModeForHandlingFoldableBlocks.Ending
+            );
             editor.edit((editBuilder: vscode.TextEditorEdit) => {
                 editsToDo.forEach((f: EditFunc) => f(editBuilder));
             });
