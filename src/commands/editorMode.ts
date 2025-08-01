@@ -3,15 +3,9 @@ import { getCurrentEditor, getDocLanguage, isSingleLineCommentWithPrefix } from 
 import { CommandTemplate } from './common/templates';
 import { Command } from './common/interfaces';
 import { CommandID } from '../common/enums';
-import {
-    colon,
-    commentTagMap,
-    endTag,
-    plus,
-    regexpMatchTags,
-    titlePrefix
-} from '../common/constants';
+import { commentTagMap, endTag, titlePrefix } from '../common/constants';
 import { EditFunc } from './common/types';
+import { matchTitle } from '../logics/title';
 
 export class EditorModeCommand extends CommandTemplate {
     private static _command = new EditorModeCommand();
@@ -29,19 +23,11 @@ export class EditorModeCommand extends CommandTemplate {
                 if (!isSingleLineCommentWithPrefix(line.text, language, titlePrefix)) {
                     continue;
                 }
-                const match = line.text.match(regexpMatchTags);
+                const [match, j] = matchTitle(line.text, i);
                 if (!match) {
                     continue;
                 }
-                let num: number = -1;
-                switch (match[1]) {
-                    case colon:
-                        num = Number(match[2]);
-                        break;
-                    case plus:
-                        num = i + Number(match[2]) + 1;
-                        break;
-                }
+                const num = j + 1;
                 if (isNaN(num) || num <= i + 1 || num > editor.document.lineCount + 1) {
                     continue;
                 }

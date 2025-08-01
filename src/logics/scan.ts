@@ -1,7 +1,8 @@
 import vscode from 'vscode';
 import { hasSingleLineCommentSuffix, isSingleLineCommentWithPrefix } from '../common/utils';
-import { colon, endTag, plus, regexpMatchTags, titlePrefix } from '../common/constants';
+import { endTag, titlePrefix } from '../common/constants';
 import { ModeForHandlingFoldableBlocks } from '../common/enums';
+import { matchTitle } from './title';
 
 // [DetectAndRecordFoldableBlocks]
 interface Handler<T> {
@@ -25,20 +26,11 @@ export function registerFoldableBlocks<T>(
         ) {
             stack.push(i);
             // [HandleStartMarkerWithEndingLineNumber]
-            const match = regexpMatchTags.exec(line.text);
-            if (match) {
+            const [matched, j] = matchTitle(line.text, i);
+            if (matched) {
                 if (mode === ModeForHandlingFoldableBlocks.Ending) {
                     stack.pop();
                     continue;
-                }
-                let j: number = -1;
-                switch (match[1]) {
-                    case colon:
-                        j = Number(match[2]) - 1;
-                        break;
-                    case plus:
-                        j = i + Number(match[2]);
-                        break;
                 }
                 if (j > i) {
                     collections.push(...handler(document, stack, j));
