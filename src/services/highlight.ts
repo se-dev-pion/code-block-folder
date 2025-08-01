@@ -5,6 +5,7 @@ import { registerFoldableBlocks } from '../logics/scan';
 import { decorateEnding, decorateTitle } from '../logics/decorate';
 import { backToTopButton, exampleButton, foldButton, goToEndButton, switch2NumberButton, switch2TagButton } from '../logics/buttons';
 import { ModeForHandlingFoldableBlocks } from '../common/enums';
+import { HoverMarkdownBlock } from '../common/components/hoverBlock';
 
 let titleDecoration: vscode.TextEditorDecorationType;
 let endingDecoration: vscode.TextEditorDecorationType;
@@ -44,30 +45,28 @@ export function addHighlight() {
 function buildDecoratedRanges(document: vscode.TextDocument, lineToBeDecorated: vscode.TextLine, rangeStart: vscode.Position, rangeEnd: vscode.Position, startLine: number, endLine: number, title: string) {
     const rangesToDecorate = new Array<vscode.DecorationOptions>();
     const range = lineToBeDecorated.range.with(rangeStart, rangeEnd);
-    const hoverMessage = new vscode.MarkdownString();
-    hoverMessage.isTrusted = true;
+    const hoverMessage = new HoverMarkdownBlock();
     const lineRange = `${startLine + 1}-${endLine + 1}`;
     if (lineToBeDecorated.lineNumber === startLine) {
-        hoverMessage.appendMarkdown(`${foldButton(startLine)}: ${lineRange}`);
-        hoverMessage.appendMarkdown(goToEndButton(document.uri, endLine));
+        hoverMessage.append(`${foldButton(startLine)}: ${lineRange}`);
+        hoverMessage.append(goToEndButton(document.uri, endLine));
         const titleLine = document.lineAt(startLine).text;
         const match = titleLine.match(regexpMatchTags);
         if (match) {
-            const extraHoverMessage = new vscode.MarkdownString(switch2TagButton(startLine, endLine));
-            extraHoverMessage.isTrusted = true;
+            const extraHoverMessage = new HoverMarkdownBlock(switch2TagButton(startLine, endLine));
             const start = rangeEnd.translate(0, 1);
             const end = start.translate(0, match[1].length);
             rangesToDecorate.push({
                 range: lineToBeDecorated.range.with(start, end),
-                hoverMessage: extraHoverMessage
+                hoverMessage: extraHoverMessage.result
             });
         }
     } else {
-        hoverMessage.appendMarkdown(`${switch2NumberButton(startLine, endLine)}: ${lineRange}`);
-        hoverMessage.appendMarkdown(`${backToTopButton(document.uri, startLine)} -> \`${title}\``);
+        hoverMessage.append(`${switch2NumberButton(startLine, endLine)}: ${lineRange}`);
+        hoverMessage.append(`${backToTopButton(document.uri, startLine)} -> \`${title}\``);
     }
-    hoverMessage.appendMarkdown(`\n\n${exampleButton}`);
-    return rangesToDecorate.concat({ range, hoverMessage });
+    hoverMessage.append(`\n\n${exampleButton}`);
+    return rangesToDecorate.concat({ range, hoverMessage: hoverMessage.result });
 }
 
 function initDecorations() {
