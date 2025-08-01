@@ -64,6 +64,8 @@ export const builtInCmdFold = 'editor.fold';
 export const colorIdForeground = 'editor.foreground';
 export const colorIdBackground = 'editor.background'; // [/]
 
-export const regexpMatchTags = /\[.*\]:([0-9]+)/;
+export const regexpMatchTags = /\[.*\]([:|+])([0-9]+)/;
 export const exampleUrl =
     'https://github.com/se-dev-pion/code-block-folder?tab=readme-ov-file#examples';
+export const colon = ':';
+export const plus = '+';

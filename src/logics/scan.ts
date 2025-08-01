@@ -1,6 +1,6 @@
 import vscode from 'vscode';
 import { hasSingleLineCommentSuffix, isSingleLineCommentWithPrefix } from '../common/utils';
-import { endTag, regexpMatchTags, titlePrefix } from '../common/constants';
+import { colon, endTag, plus, regexpMatchTags, titlePrefix } from '../common/constants';
 import { ModeForHandlingFoldableBlocks } from '../common/enums';
 
 // [DetectAndRecordFoldableBlocks]
@@ -31,7 +31,15 @@ export function registerFoldableBlocks<T>(
                     stack.pop();
                     continue;
                 }
-                const j = Number(match[1]) - 1;
+                let j: number = -1;
+                switch (match[1]) {
+                    case colon:
+                        j = Number(match[2]) - 1;
+                        break;
+                    case plus:
+                        j = i + Number(match[2]);
+                        break;
+                }
                 if (j > i) {
                     collections.push(...handler(document, stack, j));
                 }
