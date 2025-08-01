@@ -1,9 +1,24 @@
 import vscode from 'vscode';
-import { colorIdBackground, colorIdForeground, configKey, configKeyEndingBorderColor, configKeyTitleBackgroundColor, configKeyTitleTextColor, regexpMatchTags } from '../common/constants';
+import {
+    colorIdBackground,
+    colorIdForeground,
+    configKey,
+    configKeyEndingBorderColor,
+    configKeyTitleBackgroundColor,
+    configKeyTitleTextColor,
+    regexpMatchTags
+} from '../common/constants';
 import { debounced } from '../common/utils';
 import { registerFoldableBlocks } from '../logics/scan';
 import { decorateEnding, decorateTitle } from '../logics/decorate';
-import { backToTopButton, exampleButton, foldButton, goToEndButton, switch2NumberButton, switch2TagButton } from '../logics/buttons';
+import {
+    backToTopButton,
+    exampleButton,
+    foldButton,
+    goToEndButton,
+    switch2NumberButton,
+    switch2TagButton
+} from '../logics/buttons';
 import { ModeForHandlingFoldableBlocks } from '../common/enums';
 import { HoverMarkdownBlock } from '../common/components/hoverBlock';
 
@@ -13,16 +28,22 @@ export function addHighlight() {
     const updateDecorations = debounced(async () => {
         for (const editor of vscode.window.visibleTextEditors) {
             // [AddHighlightToTitles]
-            const titles = registerFoldableBlocks(editor.document,
+            const titles = registerFoldableBlocks(
+                editor.document,
                 (document: vscode.TextDocument, stack: number[], end: number) => {
                     return buildDecoratedRanges(...decorateTitle(document, stack, end));
-                }, ModeForHandlingFoldableBlocks.Title);
+                },
+                ModeForHandlingFoldableBlocks.Title
+            );
             editor.setDecorations(titleDecoration, titles); // [/]
             // [AddHighlightToEndings]
-            const endings = registerFoldableBlocks(editor.document,
+            const endings = registerFoldableBlocks(
+                editor.document,
                 (document: vscode.TextDocument, stack: number[], end: number) => {
                     return buildDecoratedRanges(...decorateEnding(document, stack, end));
-                }, ModeForHandlingFoldableBlocks.Ending);
+                },
+                ModeForHandlingFoldableBlocks.Ending
+            );
             editor.setDecorations(endingDecoration, endings); // [/]
         }
     }, 50);
@@ -42,7 +63,15 @@ export function addHighlight() {
     vscode.window.onDidChangeTextEditorSelection(updateDecorations); // [/]
 }
 
-function buildDecoratedRanges(document: vscode.TextDocument, lineToBeDecorated: vscode.TextLine, rangeStart: vscode.Position, rangeEnd: vscode.Position, startLine: number, endLine: number, title: string) {
+function buildDecoratedRanges(
+    document: vscode.TextDocument,
+    lineToBeDecorated: vscode.TextLine,
+    rangeStart: vscode.Position,
+    rangeEnd: vscode.Position,
+    startLine: number,
+    endLine: number,
+    title: string
+) {
     const rangesToDecorate = new Array<vscode.DecorationOptions>();
     const range = lineToBeDecorated.range.with(rangeStart, rangeEnd);
     const hoverMessage = new HoverMarkdownBlock();
@@ -70,17 +99,23 @@ function buildDecoratedRanges(document: vscode.TextDocument, lineToBeDecorated: 
 }
 
 function initDecorations() {
-    const titleTextColor = vscode.workspace.getConfiguration(configKey).get(configKeyTitleTextColor) as string;
-    const titleBackgroundColor = vscode.workspace.getConfiguration(configKey).get(configKeyTitleBackgroundColor) as string;
+    const titleTextColor = vscode.workspace
+        .getConfiguration(configKey)
+        .get(configKeyTitleTextColor) as string;
+    const titleBackgroundColor = vscode.workspace
+        .getConfiguration(configKey)
+        .get(configKeyTitleBackgroundColor) as string;
     titleDecoration = vscode.window.createTextEditorDecorationType({
         backgroundColor: titleBackgroundColor || new vscode.ThemeColor(colorIdForeground),
         color: titleTextColor || new vscode.ThemeColor(colorIdBackground),
-        fontWeight: 'bold',
+        fontWeight: 'bold'
     });
-    const endingBorderColor = vscode.workspace.getConfiguration(configKey).get(configKeyEndingBorderColor) as string;
+    const endingBorderColor = vscode.workspace
+        .getConfiguration(configKey)
+        .get(configKeyEndingBorderColor) as string;
     endingDecoration = vscode.window.createTextEditorDecorationType({
         borderColor: endingBorderColor || new vscode.ThemeColor(colorIdForeground),
         borderWidth: '2px',
-        borderStyle: 'solid',
+        borderStyle: 'solid'
     });
 }

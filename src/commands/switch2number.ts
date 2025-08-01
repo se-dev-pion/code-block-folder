@@ -18,12 +18,20 @@ export class Switch2NumberCommand extends CommandTemplate {
             const language = getDocLanguage(document);
             editor.edit((editBuilder: vscode.TextEditorEdit) => {
                 const startLine = document.lineAt(startLineIndex).text;
-                editBuilder.insert(new vscode.Position(startLineIndex, startLine.indexOf(titleSuffix) + 1), `:${endLineIndex + 1}`);
+                editBuilder.insert(
+                    new vscode.Position(startLineIndex, startLine.indexOf(titleSuffix) + 1),
+                    `:${endLineIndex + 1}`
+                );
                 const endLine = document.lineAt(endLineIndex).text;
-                editBuilder.delete(new vscode.Range(
-                    new vscode.Position(endLineIndex, endLine.indexOf(commentTagMap.get(language)!)),
-                    new vscode.Position(endLineIndex, endLine.length)
-                ));
+                editBuilder.delete(
+                    new vscode.Range(
+                        new vscode.Position(
+                            endLineIndex,
+                            endLine.indexOf(commentTagMap.get(language)!)
+                        ),
+                        new vscode.Position(endLineIndex, endLine.length)
+                    )
+                );
             });
         } catch (err) {
             vscode.window.showErrorMessage((err as Error).message);

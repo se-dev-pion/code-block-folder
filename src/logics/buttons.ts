@@ -1,5 +1,5 @@
 import vscode from 'vscode';
-import { FoldCommand } from "../commands/fold";
+import { FoldCommand } from '../commands/fold';
 import { Switch2NumberCommand } from '../commands/switch2number';
 import { Switch2TagCommand } from '../commands/switch2tag';
 import { exampleUrl } from '../common/constants';

@@ -32,34 +32,25 @@ const languages1 = [
 ] as const;
 
 for (const language of languages1) {
-    commentTagMap.set(language, "// ");
+    commentTagMap.set(language, '// ');
 }
 
-const languages2 = [
-    'python',
-    'ruby',
-    'shellscript',
-    'perl',
-    'nim'
-] as const;
+const languages2 = ['python', 'ruby', 'shellscript', 'perl', 'nim'] as const;
 
 for (const language of languages2) {
-    commentTagMap.set(language, "# ");
+    commentTagMap.set(language, '# ');
 }
 
-const languages3 = [
-    'lua',
-    'sql'
-] as const;
+const languages3 = ['lua', 'sql'] as const;
 
 for (const language of languages3) {
-    commentTagMap.set(language, "-- ");
+    commentTagMap.set(language, '-- ');
 } // [/]
 
 // [MarkerConstants]
-export const titlePrefix = "[";
-export const titleSuffix = "]";
-export const endTag = titlePrefix + "/" + titleSuffix; // [/]
+export const titlePrefix = '[';
+export const titleSuffix = ']';
+export const endTag = titlePrefix + '/' + titleSuffix; // [/]
 
 // [ConfigKeys]
 export const configKey = 'code-block-folder';
@@ -74,4 +65,5 @@ export const colorIdForeground = 'editor.foreground';
 export const colorIdBackground = 'editor.background'; // [/]
 
 export const regexpMatchTags = /\[.*\]:([0-9]+)/;
-export const exampleUrl = 'https://github.com/se-dev-pion/code-block-folder?tab=readme-ov-file#examples';
+export const exampleUrl =
+    'https://github.com/se-dev-pion/code-block-folder?tab=readme-ov-file#examples';

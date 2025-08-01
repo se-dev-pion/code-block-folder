@@ -1,5 +1,5 @@
 import vscode from 'vscode';
-import { getCurrentEditor } from "../common/utils";
+import { getCurrentEditor } from '../common/utils';
 import { CommandTemplate } from './common/templates';
 import { Command } from './common/interfaces';
 import { builtInCmdFold, builtInCmdOpen } from '../common/constants';
