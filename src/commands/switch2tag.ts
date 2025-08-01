@@ -23,7 +23,7 @@ export class Switch2TagCommand extends CommandTemplate {
                     return;
                 }
                 const start = startLine.indexOf(titleSuffix) + 1;
-                const end = start + match[1].length + 1;
+                const end = start + match[2].length + 1;
                 editBuilder.delete(
                     new vscode.Range(
                         new vscode.Position(startLineIndex, start),

@@ -20,7 +20,7 @@ export class Switch2NumberCommand extends CommandTemplate {
                 const startLine = document.lineAt(startLineIndex).text;
                 editBuilder.insert(
                     new vscode.Position(startLineIndex, startLine.indexOf(titleSuffix) + 1),
-                    `:${endLineIndex + 1}`
+                    `+${endLineIndex - startLineIndex}`
                 );
                 const endLine = document.lineAt(endLineIndex).text;
                 editBuilder.delete(

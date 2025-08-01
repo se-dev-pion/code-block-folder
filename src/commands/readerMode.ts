@@ -34,7 +34,7 @@ export class ReaderModeCommand extends CommandTemplate {
                         );
                         editBuilder.insert(
                             new vscode.Position(start, startLine.text.indexOf(titleSuffix) + 1),
-                            `:${end + 1}`
+                            `+${end - start}`
                         );
                     }
                 ];

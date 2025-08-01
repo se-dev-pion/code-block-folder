@@ -3,7 +3,14 @@ import { getCurrentEditor, getDocLanguage, isSingleLineCommentWithPrefix } from 
 import { CommandTemplate } from './common/templates';
 import { Command } from './common/interfaces';
 import { CommandID } from '../common/enums';
-import { commentTagMap, endTag, regexpMatchTags, titlePrefix } from '../common/constants';
+import {
+    colon,
+    commentTagMap,
+    endTag,
+    plus,
+    regexpMatchTags,
+    titlePrefix
+} from '../common/constants';
 import { EditFunc } from './common/types';
 
 export class EditorModeCommand extends CommandTemplate {
@@ -26,12 +33,20 @@ export class EditorModeCommand extends CommandTemplate {
                 if (!match) {
                     continue;
                 }
-                const num = Number(match[1]);
+                let num: number = -1;
+                switch (match[1]) {
+                    case colon:
+                        num = Number(match[2]);
+                        break;
+                    case plus:
+                        num = i + Number(match[2]) + 1;
+                        break;
+                }
                 if (isNaN(num) || num <= i + 1 || num > editor.document.lineCount + 1) {
                     continue;
                 }
                 const end = match.index! + match[0].length;
-                const start = end - (match[1].length + 1);
+                const start = end - (match[2].length + 1);
                 editsToDo.push((editBuilder: vscode.TextEditorEdit) => {
                     editBuilder.delete(
                         new vscode.Range(new vscode.Position(i, start), new vscode.Position(i, end))
