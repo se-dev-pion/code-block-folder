@@ -16,13 +16,10 @@ export class InsertCommand extends CommandTemplate {
         return InsertCommand._command;
     }
     override id = CommandID.Insert;
-    private moveCursor(success: boolean, editor: vscode.TextEditor) {
+    private moveCursor(success: boolean, editor: vscode.TextEditor, start: number) {
         if (success) {
-            const line = editor.document.lineAt(editor.selection.start.line);
-            const newCursorPosition = new vscode.Position(
-                editor.selection.start.line,
-                line.text.indexOf(titleSuffix)
-            );
+            const line = editor.document.lineAt(start);
+            const newCursorPosition = new vscode.Position(start, line.text.indexOf(titleSuffix));
             editor.selection = new vscode.Selection(newCursorPosition, newCursorPosition); // [/]
         }
     }
@@ -35,8 +32,9 @@ export class InsertCommand extends CommandTemplate {
             const commentTag = commentTagMap.get(language) as string;
             const head = commentTag + titlePrefix + titleSuffix + '\n';
             const tail = commentTag + endTag; // [/]
-            // [InsertWithoutTextSelection]
+            // [RecordCurrentState]
             const selection = editor.selection;
+            const start = selection.start.line; // [/]
             editor
                 .edit(
                     selection.isEmpty
@@ -90,8 +88,8 @@ export class InsertCommand extends CommandTemplate {
                           }
                 )
                 .then((success: boolean) => {
-                    InsertCommand._command.moveCursor(success, editor);
-                }); // [/]
+                    InsertCommand._command.moveCursor(success, editor, start);
+                });
         } catch (err) {
             vscode.window.showErrorMessage((err as Error).message);
         }
