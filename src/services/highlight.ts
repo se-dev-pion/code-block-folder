@@ -50,17 +50,14 @@ export function addHighlight() {
     initDecorations();
     updateDecorations();
     // [AddEventListeners]
-    vscode.workspace.onDidOpenTextDocument(updateDecorations);
     vscode.workspace.onDidChangeTextDocument(updateDecorations);
     vscode.workspace.onDidChangeConfiguration(() => {
         initDecorations();
         updateDecorations();
     });
-    vscode.window.onDidChangeActiveTextEditor(updateDecorations);
     vscode.window.onDidChangeVisibleTextEditors(updateDecorations);
     vscode.window.onDidChangeTextEditorVisibleRanges(updateDecorations);
-    vscode.window.onDidChangeActiveColorTheme(updateDecorations);
-    vscode.window.onDidChangeTextEditorSelection(updateDecorations); // [/]
+    vscode.window.onDidChangeActiveColorTheme(updateDecorations); // [/]
 }
 
 function buildDecoratedRanges(
