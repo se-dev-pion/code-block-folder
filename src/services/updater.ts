@@ -10,7 +10,7 @@ export function autoUpdateFoldableAreasOnEdit() {
         if (
             event.document.lineCount === state.rows ||
             event.reason === TextDocumentChangeReason.Undo ||
-            event.contentChanges.length !== 1
+            event.contentChanges.length === 0
         ) {
             return;
         }
