@@ -28,7 +28,7 @@ export function addHighlight() {
     const updateDecorations = debounced(async () => {
         for (const editor of vscode.window.visibleTextEditors) {
             // [AddHighlightToTitles]
-            const titles = registerFoldableBlocks(
+            const [titles] = registerFoldableBlocks(
                 editor.document,
                 (document: vscode.TextDocument, stack: number[], end: number) => {
                     return buildDecoratedRanges(...decorateTitle(document, stack, end));
@@ -37,7 +37,7 @@ export function addHighlight() {
             );
             editor.setDecorations(titleDecoration, titles); // [/]
             // [AddHighlightToEndings]
-            const endings = registerFoldableBlocks(
+            const [endings] = registerFoldableBlocks(
                 editor.document,
                 (document: vscode.TextDocument, stack: number[], end: number) => {
                     return buildDecoratedRanges(...decorateEnding(document, stack, end));
