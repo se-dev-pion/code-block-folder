@@ -5,7 +5,7 @@ import { Command } from './common/interfaces';
 import { CommandID } from '../common/enums';
 import { commentTagMap, endTag, titlePrefix } from '../common/constants';
 import { EditFunc } from './common/types';
-import { matchTitle } from '../logics/title';
+import { matchTitle } from '../logics/scan';
 
 export class EditorModeCommand extends CommandTemplate {
     private static _command = new EditorModeCommand();

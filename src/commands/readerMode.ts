@@ -39,7 +39,7 @@ export class ReaderModeCommand extends CommandTemplate {
                     }
                 ];
             };
-            const editsToDo = registerFoldableBlocks(
+            const [editsToDo] = registerFoldableBlocks(
                 editor.document,
                 handler,
                 ModeForHandlingFoldableBlocks.Ending

@@ -20,7 +20,7 @@ export function loadFolder(context: vscode.ExtensionContext) {
                     document,
                     handler,
                     ModeForHandlingFoldableBlocks.Both
-                ); // [/]
+                )[0]; // [/]
             }
         });
         context.subscriptions.push(disposable);
