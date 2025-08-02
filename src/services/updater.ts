@@ -5,6 +5,7 @@ import { getCurrentEditor } from '../common/utils';
 
 export function autoUpdateFoldableAreasOnEdit() {
     const [state, setState] = useDocumentState();
+    setState(vscode.window.activeTextEditor);
     vscode.window.onDidChangeActiveTextEditor(setState);
     vscode.workspace.onDidChangeTextDocument(event => {
         if (
