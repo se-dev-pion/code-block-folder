@@ -2,6 +2,11 @@
 
 All notable changes to the "code-block-folder" extension will be documented in this file.
 
+## [v0.4.0]
+
+- Feature: [auto-update reader-mode](https://github.com/se-dev-pion/code-block-folder/issues/35)
+- Fix: [move cursor after insertion correctly](https://github.com/se-dev-pion/code-block-folder/issues/37)
+
 ## [v0.3.0-v0.3.4]
 
 - Feature: [single-line markers](https://github.com/se-dev-pion/code-block-folder/issues/31)
