@@ -1,4 +1,4 @@
-# code-block-folder
+# Code Block Folder
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/se-dev-pion/code-block-folder?color=11bb1f) ![GitHub License](https://img.shields.io/github/license/se-dev-pion/code-block-folder?color=282661) [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/se-dev-pion.code-block-folder?label=ms-market+downloads&color=0078d4)](https://marketplace.visualstudio.com/items?itemName=se-dev-pion.code-block-folder) [![Open VSX Downloads](https://img.shields.io/open-vsx/dt/se-dev-pion/code-block-folder?label=open-vsx+downloads&color=c160ef)](https://open-vsx.org/extension/se-dev-pion/code-block-folder) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/se-dev-pion/code-block-folder)
 
@@ -12,39 +12,7 @@ A simple Visual Studio Code extension enabling customized code folding with comm
 
 ## Supported Languages
 
-- `c`
-- `c++`
-- `c#`
-- `java`
-- `kotlin`
-- `dart`
-- `swift`
-- `javascript`
-- `typescript`
-- `go`
-- `python`
-- `ruby`
-- `shell`
-- `php`
-- `perl`
-- `rust`
-- `lua`
-- `sql`
-- `odin`
-- `zig`
-- `d`
-- `v`
-- `scala`
-- `groovy`
-- `fsharp`
-- `nim`
-- `vue`
-- `jsx`
-- `tsx`
-- `svelte`
-- `sass` & `scss`
-- `less`
-- `stylus`
+`c`, `c++`, `c#`, `java`, `kotlin`, `dart`, `swift`, `javascript`, `typescript`, `go`, `python`, `ruby`, `shell`, `php`, `perl`, `rust`, `lua`, `sql`, `odin`, `zig`, `d`, `v`, `scala`, `groovy`, `f#`, `nim`, `vue`, `jsx`, `tsx`, `svelte`, `sass`, `less`, `stylus`
 
 ## Examples
 
@@ -57,3 +25,9 @@ A simple Visual Studio Code extension enabling customized code folding with comm
 4. Quick folding and unfolding.![quick_fold.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/images/quick_fold.gif)
 
 5. Switch between single-line marker and paired ones.![switch_mode.gif](https://raw.githubusercontent.com/se-dev-pion/code-block-folder/refs/heads/main/images/switch_mode.gif)
+
+## Extension Settings
+
+- `code-block-folder.title-text-color`: Text color of foldable block titles.
+- `code-block-folder.title-background-color`: Background color of foldable block titles.
+- `code-block-folder.ending-border-color`: Border Color of foldable block ending markers.
