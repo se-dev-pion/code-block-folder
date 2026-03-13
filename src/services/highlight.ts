@@ -24,7 +24,7 @@ import { HoverMarkdownBlock } from '../common/components/hoverBlock';
 
 let titleDecoration: vscode.TextEditorDecorationType;
 let endingDecoration: vscode.TextEditorDecorationType;
-export function addHighlight() {
+export function addHighlight(context: vscode.ExtensionContext) {
     const updateDecorations = debounced(async () => {
         for (const editor of vscode.window.visibleTextEditors) {
             // [AddHighlightToTitles]
@@ -49,15 +49,19 @@ export function addHighlight() {
     }, 50);
     initDecorations();
     updateDecorations();
-    // [AddEventListeners]
-    vscode.workspace.onDidChangeTextDocument(updateDecorations);
-    vscode.workspace.onDidChangeConfiguration(() => {
-        initDecorations();
-        updateDecorations();
-    });
-    vscode.window.onDidChangeVisibleTextEditors(updateDecorations);
-    vscode.window.onDidChangeTextEditorVisibleRanges(updateDecorations);
-    vscode.window.onDidChangeActiveColorTheme(updateDecorations); // [/]
+    context.subscriptions.push(
+        vscode.workspace.onDidChangeTextDocument(updateDecorations),
+        vscode.workspace.onDidChangeConfiguration(() => {
+            initDecorations();
+            updateDecorations();
+        }),
+        vscode.window.onDidChangeVisibleTextEditors(updateDecorations),
+        vscode.window.onDidChangeTextEditorVisibleRanges(updateDecorations),
+        vscode.window.onDidChangeActiveColorTheme(() => {
+            initDecorations();
+            updateDecorations();
+        })
+    );
 }
 
 function buildDecoratedRanges(
@@ -96,6 +100,9 @@ function buildDecoratedRanges(
 }
 
 function initDecorations() {
+    if (titleDecoration) {
+        titleDecoration.dispose();
+    }
     const titleTextColor = vscode.workspace
         .getConfiguration(configKey)
         .get(configKeyTitleTextColor) as string;
@@ -107,6 +114,9 @@ function initDecorations() {
         color: titleTextColor || new vscode.ThemeColor(colorIdBackground),
         fontWeight: 'bold'
     });
+    if (endingDecoration) {
+        endingDecoration.dispose();
+    }
     const endingBorderColor = vscode.workspace
         .getConfiguration(configKey)
         .get(configKeyEndingBorderColor) as string;

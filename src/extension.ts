@@ -7,6 +7,6 @@ import { autoUpdateFoldableAreasOnEdit } from './services/updater';
 export function activate(context: vscode.ExtensionContext) {
     initCommands(context);
     loadFolder(context);
-    addHighlight();
+    addHighlight(context);
     autoUpdateFoldableAreasOnEdit();
 }
