@@ -2,6 +2,11 @@
 
 All notable changes to the "code-block-folder" extension will be documented in this file.
 
+## [v0.4.1]
+
+- Fix: avoid memory leak
+- Doc: optimize introduction
+
 ## [v0.4.0]
 
 - Feature: [auto-update reader-mode](https://github.com/se-dev-pion/code-block-folder/issues/35)
