@@ -41,3 +41,7 @@ export function getDocLanguage(doc: vscode.TextDocument) {
     }
     return doc.languageId;
 }
+
+export function configKey(context: vscode.ExtensionContext) {
+    return context.extension.id.split('.')[1];
+}

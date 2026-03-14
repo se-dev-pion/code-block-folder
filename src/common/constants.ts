@@ -1,7 +1,7 @@
 // [CreateMappingFromLanguageToCommentPrefix]
 export const commentTagMap = new Map<string, string>();
 
-const languages1 = [
+export const languages1 = [
     'c',
     'cpp',
     'csharp',
@@ -35,13 +35,13 @@ for (const language of languages1) {
     commentTagMap.set(language, '// ');
 }
 
-const languages2 = ['python', 'ruby', 'shellscript', 'perl', 'nim'] as const;
+export const languages2 = ['python', 'ruby', 'shellscript', 'perl', 'nim'] as const;
 
 for (const language of languages2) {
     commentTagMap.set(language, '# ');
 }
 
-const languages3 = ['lua', 'sql'] as const;
+export const languages3 = ['lua', 'sql'] as const;
 
 for (const language of languages3) {
     commentTagMap.set(language, '-- ');

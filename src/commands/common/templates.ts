@@ -1,18 +1,26 @@
 import vscode from 'vscode';
-import { Command } from './interfaces';
-import { configKey } from '../../common/constants';
+import { CommandID } from '../../common/enums';
+import { configKey } from '../../common/utils';
+import { Result } from 'neverthrow';
 
-export abstract class CommandTemplate implements Command {
-    protected constructor() {}
-    public register(context: vscode.ExtensionContext) {
-        const disposable = vscode.commands.registerCommand(this.fullID, this.call);
-        context.subscriptions.push(disposable);
+export class Command {
+    public constructor(
+        private readonly context: vscode.ExtensionContext,
+        public readonly id: CommandID,
+        callback: (...args: any[]) => any
+    ) {
+        const disposable = vscode.commands.registerCommand(this.fullID, (...args: any[]) => {
+            const result = Result.fromThrowable(callback, err => err as Error)(...args);
+            result.match(
+                () => {},
+                err => vscode.window.showErrorMessage(err.message)
+            );
+        });
+        this.context.subscriptions.push(disposable);
     }
     private get fullID() {
-        return `${configKey}.${this.id}`;
+        return `${configKey(this.context)}.${this.id}`;
     }
-    protected abstract id: string;
-    protected abstract call(...args: any[]): any;
     public uriWithArgs(...args: any[]) {
         return `command:${this.fullID}?${encodeURIComponent(JSON.stringify(args))}`;
     }

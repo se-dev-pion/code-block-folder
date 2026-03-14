@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
 import { loadFolder } from './services/folder';
 import { addHighlight } from './services/highlight';
-import { initCommands } from './commands';
 import { autoUpdateFoldableAreasOnEdit } from './services/updater';
+import commands from './commands';
 
 export function activate(context: vscode.ExtensionContext) {
-    initCommands(context);
+    commands.init(context);
     loadFolder(context);
     addHighlight(context);
     autoUpdateFoldableAreasOnEdit();

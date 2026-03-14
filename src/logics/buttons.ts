@@ -1,13 +1,12 @@
 import vscode from 'vscode';
-import { FoldCommand } from '../commands/fold';
-import { Switch2NumberCommand } from '../commands/switch2number';
-import { Switch2TagCommand } from '../commands/switch2tag';
 import { exampleUrl } from '../common/constants';
+import commands from '../commands';
+import { CommandID } from '../common/enums';
 
 type MarkdownLink = ` [${string}](${string})`;
 
 export function foldButton(startLine: number): MarkdownLink {
-    const cmdUri = FoldCommand.instance.uriWithArgs(startLine);
+    const cmdUri = commands.cmds.get(CommandID.Fold)!.uriWithArgs(startLine);
     return ` [Fold](${cmdUri})`;
 }
 
@@ -22,12 +21,12 @@ export function backToTopButton(docUri: vscode.Uri, startLine: number): Markdown
 }
 
 export function switch2NumberButton(startLine: number, endLine: number): MarkdownLink {
-    const cmdUri = Switch2NumberCommand.instance.uriWithArgs(startLine, endLine);
+    const cmdUri = commands.cmds.get(CommandID.Switch2Number)!.uriWithArgs(startLine, endLine);
     return ` [Switch](${cmdUri})`;
 }
 
 export function switch2TagButton(startLine: number, endLine: number): MarkdownLink {
-    const cmdUri = Switch2TagCommand.instance.uriWithArgs(startLine, endLine);
+    const cmdUri = commands.cmds.get(CommandID.Switch2Tag)!.uriWithArgs(startLine, endLine);
     return ` [Switch](${cmdUri})`;
 }
 

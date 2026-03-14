@@ -6,25 +6,22 @@ import {
     isSingleLineCommentWithPrefix
 } from '../common/utils';
 import { commentTagMap, endTag, titlePrefix, titleSuffix } from '../common/constants';
-import { CommandTemplate } from './common/templates';
-import { Command } from './common/interfaces';
 import { CommandID } from '../common/enums';
+import { Command } from './common/templates';
 
-export class InsertCommand extends CommandTemplate {
-    private static _command = new InsertCommand();
-    public static get instance(): Command {
-        return InsertCommand._command;
-    }
-    override id = CommandID.Insert;
-    private moveCursor(success: boolean, editor: vscode.TextEditor, start: number) {
-        if (success) {
-            const line = editor.document.lineAt(start);
-            const newCursorPosition = new vscode.Position(start, line.text.indexOf(titleSuffix));
-            editor.selection = new vscode.Selection(newCursorPosition, newCursorPosition); // [/]
-        }
-    }
-    override call() {
-        try {
+export default {
+    register(context: vscode.ExtensionContext) {
+        const moveCursor = (success: boolean, editor: vscode.TextEditor, start: number) => {
+            if (success) {
+                const line = editor.document.lineAt(start);
+                const newCursorPosition = new vscode.Position(
+                    start,
+                    line.text.indexOf(titleSuffix)
+                );
+                editor.selection = new vscode.Selection(newCursorPosition, newCursorPosition);
+            }
+        };
+        return new Command(context, CommandID.Insert, () => {
             const editor = getCurrentEditor();
             const document: vscode.TextDocument = editor.document;
             const language = getDocLanguage(document);
@@ -87,11 +84,7 @@ export class InsertCommand extends CommandTemplate {
                               ); // [/]
                           }
                 )
-                .then((success: boolean) => {
-                    InsertCommand._command.moveCursor(success, editor, start);
-                });
-        } catch (err) {
-            vscode.window.showErrorMessage((err as Error).message);
-        }
+                .then((success: boolean) => moveCursor(success, editor, start));
+        });
     }
-}
+};

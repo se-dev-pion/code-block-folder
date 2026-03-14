@@ -1,20 +1,14 @@
 import vscode from 'vscode';
 import { getCurrentEditor, getDocLanguage, isSingleLineCommentWithPrefix } from '../common/utils';
-import { CommandTemplate } from './common/templates';
-import { Command } from './common/interfaces';
 import { CommandID } from '../common/enums';
 import { commentTagMap, endTag, titlePrefix } from '../common/constants';
 import { EditFunc } from './common/types';
 import { matchTitle } from '../logics/scan';
+import { Command } from './common/templates';
 
-export class EditorModeCommand extends CommandTemplate {
-    private static _command = new EditorModeCommand();
-    public static get instance(): Command {
-        return EditorModeCommand._command;
-    }
-    override id = CommandID.EditorMode;
-    override call() {
-        try {
+export default {
+    register(context: vscode.ExtensionContext) {
+        return new Command(context, CommandID.EditorMode, () => {
             const editor = getCurrentEditor();
             const language = getDocLanguage(editor.document);
             const editsToDo = new Array<EditFunc>();
@@ -46,8 +40,6 @@ export class EditorModeCommand extends CommandTemplate {
             editor.edit((editBuilder: vscode.TextEditorEdit) => {
                 editsToDo.forEach((f: EditFunc) => f(editBuilder));
             });
-        } catch (err) {
-            vscode.window.showErrorMessage((err as Error).message);
-        }
+        });
     }
-}
+};

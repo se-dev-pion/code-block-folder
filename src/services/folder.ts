@@ -1,11 +1,11 @@
 import vscode from 'vscode';
-import { commentTagMap } from '../common/constants';
+import { languages1, languages2, languages3 } from '../common/constants';
 import { registerFoldableBlocks } from '../logics/scan';
 import { ModeForHandlingFoldableBlocks } from '../common/enums';
 
 export function loadFolder(context: vscode.ExtensionContext) {
-    for (const language of commentTagMap.keys()) {
-        const disposable = vscode.languages.registerFoldingRangeProvider(language, {
+    for (const languages of [languages1, languages2, languages3]) {
+        const disposable = vscode.languages.registerFoldingRangeProvider(languages, {
             provideFoldingRanges(
                 document: vscode.TextDocument,
                 _context: vscode.FoldingContext,

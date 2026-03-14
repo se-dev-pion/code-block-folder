@@ -1,20 +1,14 @@
 import vscode from 'vscode';
 import { getCurrentEditor, getDocLanguage } from '../common/utils';
-import { CommandTemplate } from './common/templates';
-import { Command } from './common/interfaces';
 import { CommandID, ModeForHandlingFoldableBlocks } from '../common/enums';
 import { EditFunc } from './common/types';
 import { registerFoldableBlocks } from '../logics/scan';
 import { commentTagMap, endTag, titleSuffix } from '../common/constants';
+import { Command } from './common/templates';
 
-export class ReaderModeCommand extends CommandTemplate {
-    private static _command = new ReaderModeCommand();
-    public static get instance(): Command {
-        return ReaderModeCommand._command;
-    }
-    override id = CommandID.ReaderMode;
-    override call() {
-        try {
+export default {
+    register(context: vscode.ExtensionContext) {
+        return new Command(context, CommandID.ReaderMode, () => {
             const editor = getCurrentEditor();
             const language = getDocLanguage(editor.document);
             const handler = (document: vscode.TextDocument, stack: number[], end: number) => {
@@ -47,8 +41,6 @@ export class ReaderModeCommand extends CommandTemplate {
             editor.edit((editBuilder: vscode.TextEditorEdit) => {
                 editsToDo.forEach((f: EditFunc) => f(editBuilder));
             });
-        } catch (err) {
-            vscode.window.showErrorMessage((err as Error).message);
-        }
+        });
     }
-}
+};
