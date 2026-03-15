@@ -6,6 +6,7 @@ All notable changes to the "code-block-folder" extension will be documented in t
 
 - Fix: avoid memory leak
 - Doc: optimize introduction
+- Fix: fix auto-update reader-mode
 
 ## [v0.4.0]
 

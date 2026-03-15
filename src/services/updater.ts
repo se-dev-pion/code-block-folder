@@ -8,11 +8,7 @@ export function autoUpdateFoldableAreasOnEdit() {
     setState(vscode.window.activeTextEditor);
     vscode.window.onDidChangeActiveTextEditor(setState);
     vscode.workspace.onDidChangeTextDocument(event => {
-        if (
-            event.document.lineCount === state.rows ||
-            event.reason === TextDocumentChangeReason.Undo ||
-            event.contentChanges.length === 0
-        ) {
+        if (event.reason === TextDocumentChangeReason.Undo || event.contentChanges.length === 0) {
             return;
         }
         try {
