@@ -1,8 +1,11 @@
 .vscode/**
 .vscode-test/**
+out/**
+node_modules/**
 src/**
 .gitignore
 .yarnrc
+esbuild.js
 vsc-extension-quickstart.md
 **/tsconfig.json
 **/eslint.config.mjs
@@ -11,3 +14,4 @@ vsc-extension-quickstart.md
 **/.vscode-test.*
 images/**
 examples/**
+pnpm-lock.yaml

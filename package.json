@@ -2,7 +2,7 @@
   "name": "code-block-folder",
   "displayName": "Code Block Folder",
   "description": "Enable customized code folding with comments to make it easier to read codes",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "icon": "./assets/icon.png",
   "publisher": "se-dev-pion",
   "repository": "https://github.com/se-dev-pion/code-block-folder",
@@ -15,7 +15,7 @@
   "activationEvents": [
     "onStartupFinished"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "contributes": {
     "configuration": {
       "type": "object",
@@ -205,10 +205,16 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
+    "vscode:prepublish": "pnpm run package",
+    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "check-types": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vscode-test",
     "build": "vsce package --no-dependencies",
@@ -219,12 +225,13 @@
     "@types/mocha": "^10.0.9",
     "@types/node": "20.x",
     "@types/vscode": "^1.85.2",
-    "@typescript-eslint/eslint-plugin": "^8.10.0",
-    "@typescript-eslint/parser": "^8.7.0",
+    "typescript-eslint": "^8.54.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.2.1",
     "eslint": "^9.13.0",
+    "esbuild": "^0.27.2",
+    "npm-run-all": "^4.1.5",
     "eslint-plugin-neverthrow": "^1.1.4",
     "typescript": "^5.6.3"
   },
