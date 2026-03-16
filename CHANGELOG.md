@@ -2,7 +2,7 @@
 
 All notable changes to the "code-block-folder" extension will be documented in this file.
 
-## [v0.4.1]
+## [v0.4.1-v0.4.2]
 
 - Fix: avoid memory leak
 - Doc: optimize introduction
