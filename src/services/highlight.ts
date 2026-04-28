@@ -1,7 +1,5 @@
 import vscode from 'vscode';
 import {
-    colorIdBackground,
-    colorIdForeground,
     configKey,
     configKeyEndingBorderColor,
     configKeyTitleBackgroundColor,
@@ -109,9 +107,12 @@ function initDecorations() {
     const titleBackgroundColor = vscode.workspace
         .getConfiguration(configKey)
         .get(configKeyTitleBackgroundColor) as string;
+    const backgroundColor =
+        titleBackgroundColor || new vscode.ThemeColor('editor.placeholder.foreground');
+    const color = titleTextColor || new vscode.ThemeColor('editor.foreground');
     titleDecoration = vscode.window.createTextEditorDecorationType({
-        backgroundColor: titleBackgroundColor || new vscode.ThemeColor(colorIdForeground),
-        color: titleTextColor || new vscode.ThemeColor(colorIdBackground),
+        backgroundColor,
+        color,
         fontWeight: 'bold'
     });
     if (endingDecoration) {
@@ -121,8 +122,7 @@ function initDecorations() {
         .getConfiguration(configKey)
         .get(configKeyEndingBorderColor) as string;
     endingDecoration = vscode.window.createTextEditorDecorationType({
-        borderColor: endingBorderColor || new vscode.ThemeColor(colorIdForeground),
-        borderWidth: '2px',
-        borderStyle: 'solid'
+        backgroundColor,
+        color
     });
 }

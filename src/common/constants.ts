@@ -58,12 +58,6 @@ export const configKeyTitleTextColor = 'title-text-color';
 export const configKeyTitleBackgroundColor = 'title-background-color';
 export const configKeyEndingBorderColor = 'ending-border-color'; // [/]
 
-// [RuntimeBuiltInConstants]
-export const builtInCmdOpen = 'vscode.open';
-export const builtInCmdFold = 'editor.fold';
-export const colorIdForeground = 'editor.foreground';
-export const colorIdBackground = 'editor.background'; // [/]
-
 export const regexpMatchTags = /\[.*\]([:|+])([0-9]+)/;
 export const exampleUrl =
     'https://github.com/se-dev-pion/code-block-folder?tab=readme-ov-file#examples';
