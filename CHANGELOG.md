@@ -2,6 +2,12 @@
 
 All notable changes to the "code-block-folder" extension will be documented in this file.
 
+## [v0.4.3]
+
+- Fix: [avoid unknown language error](https://github.com/se-dev-pion/code-block-folder/issues/52)
+- Optimize: [make cursor more clear](https://github.com/se-dev-pion/code-block-folder/issues/53)
+- Fix: update dependencies to remove vulnerabilities
+
 ## [v0.4.1-v0.4.2]
 
 - Fix: avoid memory leak
